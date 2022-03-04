@@ -1,0 +1,70 @@
+/*
+  Original block types
+  a - orange with green circle
+  b - red with hourglass
+  c - yellow with 4 black squares. (dice)
+  d - green with blue squares (shaped like cross)
+  e - blue with white X
+  f - yellow with blue square
+  g - green, with funnel shape (triangle)
+  h - red with orange circle
+
+  verify by loading the following level
+  level data for impossible - 6 (index of 5)
+  gcXgXXXX/XgXeXXXX/Xfhf.X.c/hXagfhed/d.Xbegdh/bdfefdaX
+
+*/
+
+.block {
+  position: absolute;
+  transition: all 1s ease-in;
+}
+
+.X {
+  background-color: slategrey;
+}
+.Y {
+  display: none;
+  //background-color: yellow;
+}
+
+.a {
+  background-color: red;
+  cursor: pointer;
+}
+
+.b {
+  background-color: greenyellow;
+  cursor: pointer;
+
+}
+
+.c {
+  background-color: brown;
+  cursor: pointer;
+}
+
+.d {
+  background-color: salmon;
+  cursor: pointer;
+}
+
+.e {
+  background-color: skyblue;
+  cursor: pointer;
+}
+
+.f {
+  background-color: olive;
+  cursor: pointer;
+}
+
+.g {
+  background-color: plum;
+  cursor: pointer;
+}
+
+.h {
+  background-color: violet;
+  cursor: pointer;
+}

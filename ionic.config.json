@@ -1,0 +1,7 @@
+{
+  "name": "vexed-again",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

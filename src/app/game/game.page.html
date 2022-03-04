@@ -1,0 +1,18 @@
+<ion-content [fullscreen]="true">
+
+  <div #gameBoard id="game-board" [ngStyle]="{height: boardHeight, width: boardWidth, marginTop: heightOffset}">
+
+    <!-- For each blockline,-->
+    <div class="block-line" *ngFor="let blockLine of this.game.startState; index as indexA">
+
+      <!-- add the blocks -->
+      <app-game-block *ngFor="let block of blockLine; index as indexB"
+      [type]="block" [blockSize]="blockSize" [blocksPerLine]="this.game.blocksPerLine" [totalLines]="this.game.startState.length"
+      [startLine]="indexA" [startPosition]="indexB">
+      </app-game-block>
+
+    </div>
+
+  </div>
+
+</ion-content>
