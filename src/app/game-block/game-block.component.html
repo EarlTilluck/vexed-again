@@ -1,7 +1,8 @@
-<div #block [ngClass]="['block', type]" [ngStyle]=" {
+<div #block [ngClass]="['block', this.gameBlock.type]" [ngStyle]=" {
   height: blockSize,
   width: blockSize,
   left: left,
-  top: top
+  top: top,
+  opacity: opacity
 } ">
 </div>

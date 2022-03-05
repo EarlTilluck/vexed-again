@@ -94,6 +94,7 @@ export class GamePage implements OnInit, ViewDidEnter {
 
   /**
    * Set gameboard dimensions when loaded.
+   * And load the last level played.
    */
   ionViewDidEnter(): void {
     // wait a while the the view to load
@@ -104,9 +105,6 @@ export class GamePage implements OnInit, ViewDidEnter {
       this.game.loadLevel(this.vexed.currentLevel.board);
     }, 500);
   }
-
-
-
 
 
 }
