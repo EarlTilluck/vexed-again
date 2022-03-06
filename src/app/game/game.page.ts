@@ -40,8 +40,8 @@ export class GamePage implements OnInit, ViewDidEnter {
 
     // when a new level event triggers (new game pack selected or level passed),
     // load the new level
-    this.vexed.newLevelEvent.subscribe( (board)=> {
-      this.game.loadLevel(board);
+    this.vexed.newLevelEvent.subscribe( ()=> {
+      this.game.loadLevel();
     });
 
   }
@@ -102,7 +102,7 @@ export class GamePage implements OnInit, ViewDidEnter {
       // resize the game board
       this.resizeGameBoard();
       // load default level
-      this.game.loadLevel(this.vexed.currentLevel.board);
+      this.game.loadLevel();
     }, 500);
   }
 

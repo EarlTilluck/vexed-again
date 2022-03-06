@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MenuController } from '@ionic/angular';
+import { GameService } from '../services/game.service';
 
 @Component({
   selector: 'app-tabs',
@@ -9,7 +10,10 @@ import { MenuController } from '@ionic/angular';
 export class TabsPage {
 
 
-  constructor(private menu: MenuController) {}
+  constructor(
+    private menu: MenuController,
+    private game: GameService
+  ) {}
 
 
   /**
@@ -19,4 +23,17 @@ export class TabsPage {
     this.menu.toggle('side-menu');
   }
 
+  /**
+   * Undo event
+   */
+  onUndo(): void {
+    this.game.undo();
+  }
+
+  /**
+   * Reset event
+   */
+  onReset(): void {
+    this.game.reset();
+  }
 }

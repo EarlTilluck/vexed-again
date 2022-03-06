@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Block } from '../models/block.model';
+import { VexedService } from './vexed.service';
 
 
 
@@ -16,42 +17,67 @@ export class GameService {
   // how many lines for this board
   totalLines = 0;
 
+  // undo history
+  history: Array<Array<Block>> = [];
+
   // Array of blocks that should be displayed on screen
   blocks: Array<Block> = [];
 
-  /**
-   * when given board, parse board and display blocks on screen
-   *
-   * @param state string containing board state
-   */
-  loadLevel(state: string): void {
-    // e.g. of board state: XXXXXXXX/XYYYYYaX/XYXXXXXX/XYYYYYYX/XXXXXXYX/XaYYYYYX/XXXXXXXX
-    // X = wall, Y = empty space, a-h = block
 
-    // for testing...
-    //state = 'XXXXXYaX/XYYYYYbX/XYXXXYcX/aYYYYYdX/aaXXXYeX/aaaaaYfX/YYYYYYgX';
+  constructor(
+    private vexed: VexedService
+  ){};
+
+
+  /**
+   * Load game blocks onto screen,
+   * First check to see if there is history for current level, and load that
+   * otherwise, parse board and display blocks on screen
+   *
+   */
+  loadLevel(): void {
 
     // clear previous board state
     this.blocks = [];
 
+    // e.g. of board string:
+    // XXXXXXXX/XYYYYYaX/XYXXXXXX/XYYYYYYX/XXXXXXYX/XaYYYYYX/XXXXXXXX
+    // X = wall, Y = empty space, a-h = block
+    const board = this.vexed.currentLevel.board;
+
     // split string into each line,
-    const lines = state.split('/');
+    const lines = board.split('/');
     // get blocks per line and total lines of board
     this.blocksPerLine = lines[0].length;
     this.totalLines = lines.length;
 
-    // for each line...
-    let lineNum = 0;
-    for (const line of lines) {
-      // for each char in line...
-      let positionNum = 0;
-      for (const ch of line) {
-        // add block into array
-        const id = lineNum + '' + positionNum; // generate unique id from line and position
-        this.blocks.push(new Block(id, lineNum, positionNum, (ch + '')));
-        positionNum++;
+
+    // get the history for the current level
+    this.history = this.vexed.getHistory();
+    // if history is not empty,
+    // then set the current state as the first block array in history
+    if (this.history !== null && this.history.length > 0) {
+      this.blocks = this.cloneBlocks(this.history[0]);
+    } else {
+      // if no history, then load the board data from the level string
+      // for each line...
+      let lineNum = 0;
+      for (const line of lines) {
+        // for each char in line...
+        let positionNum = 0;
+        for (const ch of line) {
+          // add block into array
+          const id = lineNum + '' + positionNum; // generate unique id from line and position
+          this.blocks.push(new Block(id, lineNum, positionNum, (ch + ''), 1));
+          positionNum++;
+        }
+        lineNum++;
       }
-      lineNum++;
+      // add current state to history
+      // clear any previous history ( this is a new game )
+      this.history = [];
+      // clone the array, then push to history
+      this.pushHistory();
     }
   }
 
@@ -101,32 +127,6 @@ export class GameService {
   }
 
   /**
-   * After a move, have all blocks standing on air fall.
-   */
-  fallBlocks(): void {
-    console.log('falling');
-    // loop through all blocks...
-    let didFall = false;
-    for (const block of this.blocks) {
-      // find if block should fall and break out of loop if found
-      didFall = this.tryFall(block);
-      if (didFall) {
-        break;
-      }
-    }
-    if (didFall) {
-      // wait for animation to finish, then
-      // repeat until no blocks can fall anymore
-      setTimeout(() => {
-        this.fallBlocks();
-      }, 250);
-    } else {
-      // if no more blocks can fall, vanish blocks of the same type next to eachother
-      this.vanishBlocks();
-    }
-  }
-
-  /**
    * Have a block fall due to gravity, if there is empty space below it.
    *
    * @param gameBlock
@@ -149,11 +149,38 @@ export class GameService {
 
 
   /**
+   * After a move, have all blocks standing on air fall.
+   */
+  fallBlocks(): void {
+    // loop through all blocks...
+    let didFall = false;
+    for (const block of this.blocks) {
+      // find if block should fall and break out of loop if found
+      didFall = this.tryFall(block);
+      if (didFall) {
+        break;
+      }
+    }
+    if (didFall) {
+      // wait for animation to finish, then
+      // repeat until no blocks can fall anymore
+      setTimeout(() => {
+        this.fallBlocks();
+      }, 250);
+    } else {
+      // if no more blocks can fall, vanish blocks of the same type next to eachother
+      this.vanishBlocks();
+    }
+  }
+
+
+
+
+  /**
    * check all blocks and make them dissappear
    * if they are next to another block of the same type
    */
   vanishBlocks(): void {
-    console.log('vanishing');
     let didVanish = false;
     for (const block of this.blocks) {
       // get adjacent blocks
@@ -201,30 +228,16 @@ export class GameService {
       setTimeout(() => {
         // check if win first
         if (this.checkWin()) {
-          // winning code here...
-          console.log('Level Passed..');
+          this.win();
         } else {
           this.fallBlocks();
         }
       }, 500);
+    } else {
+      // No more blocks can fall, and no blocks can vanish anymore...
+      // update the history of the board.
+      this.pushHistory();
     }
-  }
-
-
-  /**
-   * Check if there are any playable blocks left.
-   *
-   * @returns true if board cleared
-   */
-  checkWin(): boolean {
-    let win = true;
-    for (const block of this.blocks) {
-      if (block.type !== 'X' && block.type !== 'Y') {
-        win = false;
-        break;
-      }
-    }
-    return win;
   }
 
   /**
@@ -244,6 +257,40 @@ export class GameService {
     this.moveEvent.emit(blockB);
   }
 
+  /**
+   * Check if there are any playable blocks left.
+   *
+   * @returns true if board cleared
+   */
+  checkWin(): boolean {
+    let win = true;
+    for (const block of this.blocks) {
+      if (block.type !== 'X' && block.type !== 'Y') {
+        win = false;
+        break;
+      }
+    }
+    return win;
+  }
+
+  /**
+   * Pass this level, then load the next level.
+   */
+  win() {
+    // push blank history for this level, so if this level
+    // is selected again, we can start from the begining
+    this.history = [];
+    this.vexed.saveHistory(this.history);
+    // load next level,
+    // returns false if we are at the end of the game pack
+    if(this.vexed.loadNextLevel()) {
+      this.loadLevel();
+    } else {
+      // we are at the end of this board.
+      console.log('gamepack won');
+    }
+  }
+
 
   /**
    * Given a postion, find the corresponding block.
@@ -260,6 +307,63 @@ export class GameService {
       }
     }
     return newBlock;
+  }
+
+
+  /**
+   * Undo last move.
+   */
+  undo(): void {
+    // if we have at least two states in history,
+    // we can remove one of them and go back to the previous.
+    // if we only have one state, then do nothing, this is the begin state
+    if (this.history.length > 1) {
+      this.blocks = []; // reset blocks array
+      this.history.shift(); // remove current state
+      this.blocks = this.cloneBlocks(this.history[0]); // set blocks to state before
+      this.vexed.saveHistory(this.history);
+    }
+  }
+
+  /**
+   * Reset the game
+   */
+  reset(): void {
+    // pop all history until only begin state left
+    while (this.history.length > 1) {
+      this.history.shift();
+    }
+    // set current state to begin state
+    this.blocks = []; // empty blocks array first
+    this.blocks = this.cloneBlocks(this.history[0]);
+    // save the new history
+    this.vexed.saveHistory(this.history);
+  }
+
+
+  /**
+   * Add current state of board to history
+   */
+  pushHistory() {
+    // clone the blocks array
+    // then place that array at start of the history array
+    this.history.unshift(this.cloneBlocks(this.blocks));
+    // save the history to local storage
+    this.vexed.saveHistory(this.history);
+  }
+
+  /**
+   * Make a copy of the given array of blocks
+   *
+   * @returns new Array of blocks.
+   */
+  cloneBlocks(blocks: Array<Block>): Array<Block> {
+    const newArray: Array<Block> = [];
+    for(const block of blocks) {
+      const temp = new Block(block.blockId, block.line, block.position, block.type, block.opacity);
+      newArray.push(temp);
+    }
+    return newArray;
   }
 
 }// end class

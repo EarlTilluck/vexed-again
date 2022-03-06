@@ -45,6 +45,9 @@ export class SidemenuComponent implements OnInit {
     this.selectGamePackMode = false;
   }
 
+  onCloseMenu(): void {
+    this.menu.close('side-menu');
+  }
 
 
 }

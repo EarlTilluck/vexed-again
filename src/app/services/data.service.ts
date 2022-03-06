@@ -1,40 +1,31 @@
 import { Injectable } from '@angular/core';
+import { Block } from '../models/block.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-
   // error message if can't save data
-  localStorageError = 'Could not save game progress. Try clearing browser cache.';
-
-  constructor() { }
+  localStorageError = 'Could not access localStorage. Try clearing browser cache.';
 
 
   /**
-   * Save the progress of the player.
+   * Save the last GamePack played
    *
-   * Saves the game pack and the level.
    * Call this when the the player progresses to new level or chooses
-   * a new level to play. Pass null if you want to skip saving one of
-   * the values.
+   * a new level to play.
    *
    * @param gamePackId zero based index of the pack
-   * @param level zero based index of the level
    */
-  savelastGamePlayed(gamePackId: number | null, level: number | null): void {
+  savelastGamePackPlayed(gamePackId: number): void {
     try {
-      if (gamePackId !== null) {
-        localStorage.setItem('last_game_pack', gamePackId + '');
-      }
-      if (level !== null) {
-        localStorage.setItem('last_level', level + '');
-      }
+      localStorage.setItem('last_game_pack', gamePackId + '');
     } catch (e) {
       console.log(this.localStorageError);
     }
   }
+
 
   /**
    * Get the last game pack played.
@@ -49,22 +40,6 @@ export class DataService {
       return 0;
     }
     return gamePack;
-  }
-
-
-  /**
-   * Get the last level played (for the last game pack played)
-   *
-   * @returns index of the last level (0 by default)
-   */
-  getLastLevelPlayed(): number {
-    // get level from local storage
-    const lastLevel = parseInt(localStorage.getItem('last_level'), 10);
-    // parseInt may return NaN, return 0 if nan
-    if (isNaN(lastLevel)) {
-      return 0;
-    }
-    return lastLevel;
   }
 
 
@@ -89,11 +64,10 @@ export class DataService {
    * This corresponds to the zero based index of
    * the last level not passed yet.
    *
-   * Important: If all levels passed, this
-   * may return an out of bounds index. Make sure
-   * to account for this.
+   * Important! : If all levels passed, this
+   * may return an out of bounds index.
    *
-   * @param gamePackId zero based index game pack
+   * @param gamePackId zero based index of game pack
    * @returns zero based index of level not passed yet
    */
   getProgressForGamePack(gamePackId: number): number {
@@ -102,6 +76,40 @@ export class DataService {
       return 0;
     }
     return progress;
+  }
+
+
+  /**
+   * Save the history (undo states) for a level
+   *
+   * @param gamePackId id of game pack
+   * @param level zero based index of level
+   * @param history the history array
+   */
+  saveHistoryForLevel(gamePackId: number, level: number, history: Array<Array<Block>>) {
+    try {
+      localStorage.setItem('history-' + gamePackId + '-level-' + level, JSON.stringify(history));
+    } catch (e) {
+      console.log(this.localStorageError);
+    }
+  }
+
+  /**
+   * Get the history (undo states) for a level
+   *
+   * @param gamePackId
+   * @param level
+   * @returns History array
+   */
+  getHistoryForLevel(gamePackId: number, level: number) {
+    const historyString = localStorage.getItem('history-' + gamePackId + '-level-' + level);
+    try {
+      const history: Array<Array<Block>> = JSON.parse(historyString);
+      return history;
+    } catch (e) {
+      console.log(this.localStorageError);
+    }
+    return [];
   }
 
 }

@@ -7,6 +7,7 @@ import BoardInfo from '../models/board-info';
 import LevelsInfo from '../models/level-info';
 import { LevelPack } from '../models/LevelPack.model';
 import { Level } from '../models/level.model';
+import { Block } from '../models/block.model';
 
 
 @Injectable({
@@ -18,18 +19,21 @@ export class VexedService {
   vexedLevels: Array<LevelPack> = [];
 
   // current level on screen
+  currentLevelId: number;
   currentLevel: Level;
 
   // current pack
+  currentPackId: number;
   currentPack: LevelPack;
 
-  newLevelEvent = new EventEmitter<string>();
+  // new level event.
+  newLevelEvent = new EventEmitter();
 
   constructor(private data: DataService) {
     // load vexed levels from converted files
     this.loadLevels();
     // load last level played
-    this.loadLastLevelPlayed(); // if never played before, starts at Tutorial 1;
+    this.loadLastGame(); // if never played before, starts at Tutorial 1;
   }
 
   /**
@@ -75,32 +79,82 @@ export class VexedService {
    */
   selectGamePack(id: number) {
     // set the current pack
+    this.currentPackId = id;
     this.currentPack = this.vexedLevels[id];
     // get last game played for this pack
-    let lastLevel = this.data.getProgressForGamePack(id);
-    if (lastLevel > this.currentPack.levels.length) {
-      lastLevel = this.currentPack.levels.length - 1;
-    }
-    this.currentLevel = this.currentPack.levels[lastLevel];
-    // set last game played as this pack, with last level played for this pack
-    this.data.savelastGamePlayed(id, lastLevel);
-    this.newLevelEvent.emit(this.currentLevel.board);
+    this.loadProgressForGamePack(id);
+    // set last game played as this pack,
+    this.data.savelastGamePackPlayed(id);
+    this.newLevelEvent.emit();
   }
 
 
   /**
-   * Load the last game that was played
+   * When app starts, Load the last game that was played
    */
-  loadLastLevelPlayed(): void {
+  loadLastGame(): void {
     // load the last pack
-    this.currentPack = this.vexedLevels[this.data.getLastGamePackPlayed()];
+    const lastPackId = this.data.getLastGamePackPlayed();
+    this.currentPackId = lastPackId;
+    this.currentPack = this.vexedLevels[lastPackId];
     // load the last game (check if out of bounds)
-    let lastLevel = this.data.getLastLevelPlayed();
-    if (lastLevel >= this.currentPack.levels.length) {
-      lastLevel = this.currentPack.levels.length -1;
-    }
-    this.currentLevel = this.currentPack.levels[lastLevel];
+    this.loadProgressForGamePack(this.currentPackId);
   }
 
+  /**
+   * Get and set the last unpassed level for a game pack.
+   *
+   * @param gamePackId zero based index of game pack
+   */
+  loadProgressForGamePack(gamePackId: number) {
+    // get last unpassed level for gamepack
+    let level = this.data.getProgressForGamePack(gamePackId);
+    // check if out of bounds (past last level)
+    if(level >= this.currentPack.levels.length) {
+      level = this.currentPack.levels.length -1;
+    }
+    // set level
+    this.currentLevelId = level;
+    this.currentLevel = this.currentPack.levels[level];
+  }
+
+  /**
+   * Save the history (undo states) current level
+   *
+   * @param history history array
+   */
+  saveHistory(history: Array<Array<Block>>): void {
+    this.data.saveHistoryForLevel(this.currentPackId, this.currentLevelId, history);
+  }
+
+  /**
+   * Get the history for current level
+   *
+   * @returns history array
+   */
+  getHistory(): Array<Array<Block>> {
+    return this.data.getHistoryForLevel(this.currentPackId, this.currentLevelId);
+  }
+
+  /**
+   * Load the next level of the game after current
+   * level has been won.
+   *
+   * @returns false if no more levels
+   */
+  loadNextLevel(): boolean {
+    // add one to level id
+    const newLevel = this.currentLevelId + 1;
+    // if level available in array...
+    if (newLevel < this.currentPack.levels.length) {
+      // set new level
+      this.currentLevelId = newLevel;
+      this.currentLevel = this.currentPack.levels[newLevel];
+      // update progress
+      this.data.saveProgressForGamePack(this.currentPackId, this.currentLevelId);
+      return true;
+    }
+    return false;
+  }
 
 }// end class

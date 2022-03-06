@@ -91,7 +91,6 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
    * it's location in the BlockLines array.
    */
   moveToPosition(): void {
-
     // get size of block.
     let size = parseInt(this.blockSize.replace('px', ''), 10);
     if (isNaN(size)) {
@@ -122,25 +121,22 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   move(direction: string) {
     // call trymove from game service, returns true or false.
-    const success = this.game.tryMove(this.gameBlock, direction);
-    // do animation if successful
-    if (success) {
-      //this.moveToPosition();
-    }
-    // check if block will fall
-
-    // check surrounding blocks for deletion
-
+    this.game.tryMove(this.gameBlock, direction);
   }
 
 
   /**
    * Update this block on the screen.
+   * The Game Service should have updated values in
+   * the block object,
    */
   update() {
+    // move to new postion, does nothing if value of block didn't change.
     this.moveToPosition();
-    if(this.gameBlock.opacity === 0) {
-      this.opacity = this.gameBlock.opacity;
+    // if opacity changed, set the opacity,
+    // then set the block to be empty space.
+    this.opacity = this.gameBlock.opacity;
+    if(this.opacity === 0) {
       setTimeout(()=>{
         this.gameBlock.type = 'Y';
       }, 500);

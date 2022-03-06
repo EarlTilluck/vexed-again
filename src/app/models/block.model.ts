@@ -7,11 +7,11 @@ export class Block {
   public opacity: number;
   public type: string;
 
-  constructor(blockId: string, line: number, position: number, type: string) {
+  constructor(blockId: string, line: number, position: number, type: string, opacity: number) {
     this.blockId = blockId;
     this.position = position;
     this.line = line;
-    this.opacity = 1;
+    this.opacity = opacity;
     this.type= type;
   }
 

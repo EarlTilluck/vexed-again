@@ -8,28 +8,16 @@
       <ion-label>Menu</ion-label>
     </ion-tab-button>
 
-
-    <ion-tab-button>
-      <ion-icon name="arrow-back"></ion-icon>
-      <ion-label>move left</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button>
+    <ion-tab-button (click)="onUndo()">
       <ion-icon name="arrow-undo"></ion-icon>
       <ion-label>undo</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button>
+    <ion-tab-button (click)="onReset()">
       <ion-icon name="refresh"></ion-icon>
       <ion-label>reset</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button>
-      <ion-icon name="arrow-forward"></ion-icon>
-      <ion-label>move right</ion-label>
-    </ion-tab-button>
-
-
-  </ion-tab-bar>
+   </ion-tab-bar>
 
 </ion-tabs>
