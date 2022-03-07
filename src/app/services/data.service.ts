@@ -45,7 +45,7 @@ export class DataService {
 
   /**
    * Save the progess of each game pack. Saves the last
-   * unpassed level.
+   * unpassed level. (or the current level being played)
    *
    * @param gamePackId zero base index of a game pack
    * @param progress zero based index of last unpassed level
@@ -143,6 +143,37 @@ export class DataService {
       return darkMode;
     }
     return 'true'; // dark mode by default
+  }
+
+
+  /**
+   * Save a level as previously passed (successfully completed)
+   *
+   * @param packId
+   * @param levelId
+   */
+  saveLevelAsPassed(packId: number, levelId: number): void {
+    try {
+      localStorage.setItem('levelPassed-' + packId + '-level-' + levelId, 'true');
+    } catch (e) {
+      console.log(this.localStorageError);
+    }
+  }
+
+
+  /**
+   * Get the whether a level has been passed or not
+   *
+   * @param packId
+   * @param levelId
+   * @returns true if level already completed.
+   */
+  getPassForLevel(packId: number, levelId: number) {
+    const passedString = localStorage.getItem('levelPassed-' + packId + '-level-' + levelId);
+    if (passedString !== null && passedString === 'true') {
+      return true;
+    }
+    return false;
   }
 
 }

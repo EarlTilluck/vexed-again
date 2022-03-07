@@ -40,15 +40,20 @@ Use angular-cli-ghpages to build and deploy to githup pages.
 
 ## todo
 
-* show loader before ngfor in menu 
-https://stackoverflow.com/questions/35819264/angular-2-callback-when-ngfor-has-finished/51307412#51307412
 
-* create modal for selecting new pack
-* create modal for selecting available levels for pack
-* clear game data modal, this pack or all packs option.
-* ~~credits modal and don't show credits details in menu for each gamepack~~
+* Save Last Passed level (modify save progress) add saveLastSelectedLevel to data service, show toast when 
+bad level select and only select passed levels or first unpassed level.
+
+* when a level is cleared, mark that as cleared so it is selectable.
 
 * user can select a previous level in a gamepack
+
+
+* clear game data modal, this pack or all packs option.
+
+* implement progress indicators in menu, when selecting game pack.
+
+* show current game pack and current level somewhere on screen (near bottom?)
 
 * disable UI while a move is being played out.
 
@@ -69,7 +74,7 @@ https://stackoverflow.com/questions/35819264/angular-2-callback-when-ngfor-has-f
   
 * implement sound and toggle sound button
 
-* progress indicators in menu, when selecting level.
+
 
 * Add images and graphics. blocks are a-h abcdefgh which is 8 different blocks.
 

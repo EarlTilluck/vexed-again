@@ -64,7 +64,7 @@ export class VexedService {
       }
       // create the LevelPack and add it to array
       this.vexedLevels.push(
-        new LevelPack(packData.name, packData.total, packData.by, packData.difficulty, packData.link, levels)
+        new LevelPack(packData.name, packData.by, packData.difficulty, packData.link, levels)
       );
 
     }// end for levels info
@@ -152,9 +152,46 @@ export class VexedService {
       this.currentLevel = this.currentPack.levels[newLevel];
       // update progress
       this.data.saveProgressForGamePack(this.currentPackId, this.currentLevelId);
+      this.newLevelEvent.emit();
       return true;
     }
     return false;
+  }
+
+
+  /**
+   * load a provided level onto the screen
+   */
+  loadLevel(id: number): boolean {
+    // if in range
+    if(id >= 0 && id < this.currentPack.levels.length) {
+      this.currentLevelId = id;
+      this.currentLevel = this.currentPack.levels[id];
+      // update progress
+      this.data.saveProgressForGamePack(this.currentPackId, this.currentLevelId);
+      this.newLevelEvent.emit();
+      console.log(this.currentLevelId);
+      return true;
+    }
+    return false;
+  }
+
+
+  /**
+   * Save the level as passed
+   */
+  passLevel() {
+    this.data.saveLevelAsPassed(this.currentPackId, this.currentLevelId);
+  }
+
+  /**
+   * get whether a level in current selected game pack has passed.
+   *
+   * @param levelId
+   * @returns true if level has already been completed.
+   */
+  getPass(levelId: number): boolean {
+    return this.data.getPassForLevel(this.currentPackId, levelId);
   }
 
 }// end class

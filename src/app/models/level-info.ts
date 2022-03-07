@@ -12,7 +12,7 @@ export default {
   '2': {
     name: "Children's Pack",
     key: 'childrens_pack',
-    total: '60',
+    total: '59',
     by: 'Vexed Development Team',
     difficulty: 'Very easy levels meant for children.',
     link: 'http://vexed.sourceforge.net'
@@ -43,7 +43,7 @@ export default {
   },
   '6': {
     name: 'Confusion Pack',
-    key: 'confusion_pac',
+    key: 'confusion_pack',
     total: '60',
     by: 'Vexed Development Team',
     difficulty: 'Hard! These levels are tricky and require careful planning to solve.',

@@ -1,0 +1,43 @@
+<ion-modal #levelSelect trigger="trigger-level-select">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Select Level</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="onDissmissModal()">
+            <ion-icon slot="icon-only" name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+
+      <ion-list>
+          <ion-item button="true"
+            *ngFor="let level of this.vexed.currentPack.levels; index as i"
+            (click)="onSelectLevel(i)"
+          >
+            <ion-icon slot="start" [name]="passArray[i] ? 'checkmark-circle-outline' : 'ellipse-outline'"></ion-icon>
+            <ion-label>Level {{i + 1}} Par: 18 Best: 12 {{passArray[i]}}</ion-label>
+          </ion-item>
+        </ion-list>
+
+      <ion-grid>
+        <ion-row
+          *ngFor="let level of this.vexed.currentPack.levels; index as i"
+          (click)="onSelectLevel(i)"
+        >
+          <ion-col>
+            <ion-card button class="ion-padding">
+              <div style="display: flex; align-items: center">
+                <h4>Level {{ i + 1}}</h4>
+              </div>
+              <h6>{{passArray[i] ? 'Passed' : ''}} par: 6, best 9</h6>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-content>
+  </ng-template>
+</ion-modal>

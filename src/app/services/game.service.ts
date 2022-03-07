@@ -281,11 +281,11 @@ export class GameService {
     // is selected again, we can start from the begining
     this.history = [];
     this.vexed.saveHistory(this.history);
+    // mark this level as passed
+    this.vexed.passLevel();
     // load next level,
     // returns false if we are at the end of the game pack
-    if(this.vexed.loadNextLevel()) {
-      this.loadLevel();
-    } else {
+    if(this.vexed.loadNextLevel() === false ) {
       // we are at the end of this board.
       console.log('gamepack won');
     }

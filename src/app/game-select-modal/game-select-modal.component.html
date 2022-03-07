@@ -15,17 +15,19 @@
       <ion-grid>
         <ion-row
           class="ion-padding-top ion-margin-top"
-          [ngClass]="this.ui.shouldHideSpinner ? 'hidden' : 'shown'"
+          [ngClass]="this.hideSpinner? 'hidden' : 'shown'"
         >
           <ion-col size="6" offset="6">
-            <ion-spinner name="crescent"></ion-spinner>
+            <ion-spinner name="dots"></ion-spinner>
           </ion-col>
         </ion-row>
 
-        <app-game-pack-item
-          *ngFor="let pack of this.vexed.vexedLevels; index as i"
+        <app-game-pack-item [ngClass]="this.hideSpinner? 'shown' : 'hidden'"
+          *ngFor="let pack of this.packs; index as i"
           (click)="onSelectPack(i)"
-          [pack]="this.vexed.vexedLevels[i]"
+          [pack]="this.packs[i]"
+          [id]="i"
+          [end]="this.packs.length-1"
         >
         </app-game-pack-item>
       </ion-grid>

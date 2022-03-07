@@ -41,9 +41,18 @@ export class SidemenuComponent implements OnInit {
   onSelectGamePack() {
     this.menu.close('side-menu');
     // show spinner before content loads.
-    this.ui.showSpinner();
+    this.ui.hideSpinner.emit(false);
   }
 
+  /**
+   * Select level for current game pack.
+   */
+  onSelectLevel() {
+    this.menu.close('side-menu');
+    // emit select levels event so
+    // modal will load level data.
+    this.ui.selectLevels.emit();
+  }
 
   /**
    * toggle dark mode
@@ -80,6 +89,8 @@ export class SidemenuComponent implements OnInit {
    */
   onToggleSounds() {
     // todo
+    // this function not needed, since isSoundOn is bound to toggle button
+    // if ( this. sound is on... play ) else don't.
   }
 
 }

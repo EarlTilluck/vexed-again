@@ -13,34 +13,40 @@
     <ion-list>
 
       <ion-item style="cursor: pointer" id="trigger-game-select" (click)="onSelectGamePack()">
-        <ion-icon slot="start" name="game-controller-outline">
+        <ion-icon slot="start" name="apps-outline">
         </ion-icon>
         <ion-label>Select Game Pack</ion-label>
       </ion-item>
 
-      <ion-item>
+      <ion-item style="cursor: pointer" id="trigger-level-select" (click)="onSelectLevel()">
+        <ion-icon slot="start" name="cube-outline">
+        </ion-icon>
+        <ion-label>Select level</ion-label>
+      </ion-item>
+
+      <ion-item style="cursor: pointer">
         <ion-icon slot="start" name="help-circle-outline"></ion-icon>
         <ion-label>How To Play</ion-label>
       </ion-item>
 
-      <ion-item>
+      <ion-item style="cursor: pointer">
         <ion-icon slot="start" name="moon-outline"></ion-icon>
         <ion-label>Dark Mode</ion-label>
         <ion-toggle [(ngModel)]="darkMode" (ionChange)="onToggleDarkMode()"></ion-toggle>
       </ion-item>
 
-      <ion-item>
-        <ion-icon slot="start" name="musical-notes-outline"></ion-icon>
+      <ion-item style="cursor: pointer">
+        <ion-icon slot="start" [name]="isSoundOn ? 'volume-high-outline' : 'volume-mute-outline'"></ion-icon>
         <ion-label>Sounds</ion-label>
         <ion-toggle [(ngModel)]="isSoundOn" (ionChange)="onToggleSounds()"></ion-toggle>
       </ion-item>
 
-      <ion-item>
+      <ion-item style="cursor: pointer">
         <ion-icon slot="start" name="trash-outline"></ion-icon>
         <ion-label>Clear Game Data.</ion-label>
       </ion-item>
 
-      <ion-item>
+      <ion-item style="cursor: pointer">
         <ion-icon slot="start" name="information-circle-outline"></ion-icon>
         <ion-label>About</ion-label>
       </ion-item>
