@@ -1,0 +1,17 @@
+<ion-row>
+  <ion-col>
+    <ion-card button class="ion-padding">
+      <div style="display: flex; align-items: center">
+        <h4>
+          {{ pack.name }}
+          <ion-icon style="font-size: 1em" name="arrow-forward"></ion-icon>
+        </h4>
+      </div>
+      <h6>Progress: 0 of {{ pack.totalLevels }}</h6>
+      <ion-progress-bar color="primary" value="0.5"></ion-progress-bar>
+      <p>Difficulty: {{ pack.difficulty }}</p>
+      <p>Created by: {{ pack.by }}</p>
+      <p>Source: {{ pack.link }}</p>
+    </ion-card>
+  </ion-col>
+</ion-row>

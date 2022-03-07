@@ -1,0 +1,34 @@
+<ion-modal #gameSelect trigger="trigger-game-select">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Select New Game Pack</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="onDissmissModal()">
+            <ion-icon slot="icon-only" name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-grid>
+        <ion-row
+          class="ion-padding-top ion-margin-top"
+          [ngClass]="this.ui.shouldHideSpinner ? 'hidden' : 'shown'"
+        >
+          <ion-col size="6" offset="6">
+            <ion-spinner name="crescent"></ion-spinner>
+          </ion-col>
+        </ion-row>
+
+        <app-game-pack-item
+          *ngFor="let pack of this.vexed.vexedLevels; index as i"
+          (click)="onSelectPack(i)"
+          [pack]="this.vexed.vexedLevels[i]"
+        >
+        </app-game-pack-item>
+      </ion-grid>
+    </ion-content>
+  </ng-template>
+</ion-modal>

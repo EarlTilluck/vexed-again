@@ -1,6 +1,6 @@
-<ion-menu side="start" swipeGesture="false" menuId="side-menu" contentId="main" (ionWillOpen)="resetMenu()">
+<ion-menu side="start" swipeGesture="false" menuId="side-menu" contentId="main">
   <ion-header>
-    <ion-toolbar color="dark">
+    <ion-toolbar>
       <ion-title>Vexed Again.</ion-title>
       <ion-buttons slot="end">
         <ion-button (click)="onCloseMenu()">
@@ -12,47 +12,36 @@
   <ion-content>
     <ion-list>
 
-      <ion-item style="cursor: pointer" (click)="toggleSelectMode()">
-        <ion-icon slot="start" name="{{selectGamePackMode ? 'arrow-back-outline' : 'game-controller-outline' }}">
+      <ion-item style="cursor: pointer" id="trigger-game-select" (click)="onSelectGamePack()">
+        <ion-icon slot="start" name="game-controller-outline">
         </ion-icon>
-        <ion-label>{{ selectGamePackMode ? 'Back' : 'Select Level'}}</ion-label>
+        <ion-label>Select Game Pack</ion-label>
       </ion-item>
 
-      <ion-grid *ngIf="selectGamePackMode">
-        <ion-row *ngFor="let pack of vexedLevels; index as i" (click)="onSelectPack(i)">
-          <ion-col>
-            <ion-card button class="ion-padding">
-              <div style="display: flex; align-items: center">
-                <h4>{{pack.name}} <ion-icon style="font-size: 1em" name="arrow-forward"></ion-icon></h4>
-              </div>
-              <h6>Progress: 0 of {{pack.totalLevels}}</h6>
-              <ion-progress-bar color="primary" value="0.5"></ion-progress-bar>
-              <p>
-                Difficulty: {{pack.difficulty}}
-              </p>
-              <p>
-                Created by: {{pack.by}}
-              </p>
-              <p>
-                Source: {{pack.link}}
-              </p>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-
-      <ion-item *ngIf="!selectGamePackMode">
-        <ion-icon slot="start" name="help"></ion-icon>
+      <ion-item>
+        <ion-icon slot="start" name="help-circle-outline"></ion-icon>
         <ion-label>How To Play</ion-label>
       </ion-item>
 
-      <ion-item *ngIf="!selectGamePackMode">
-        <ion-icon slot="start" name="settings-outline"></ion-icon>
-        <ion-label>Settings</ion-label>
+      <ion-item>
+        <ion-icon slot="start" name="moon-outline"></ion-icon>
+        <ion-label>Dark Mode</ion-label>
+        <ion-toggle [(ngModel)]="darkMode" (ionChange)="onToggleDarkMode()"></ion-toggle>
       </ion-item>
 
-      <ion-item *ngIf="!selectGamePackMode">
-        <ion-icon slot="start" name="information-outline"></ion-icon>
+      <ion-item>
+        <ion-icon slot="start" name="musical-notes-outline"></ion-icon>
+        <ion-label>Sounds</ion-label>
+        <ion-toggle [(ngModel)]="isSoundOn" (ionChange)="onToggleSounds()"></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon slot="start" name="trash-outline"></ion-icon>
+        <ion-label>Clear Game Data.</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon slot="start" name="information-circle-outline"></ion-icon>
         <ion-label>About</ion-label>
       </ion-item>
 

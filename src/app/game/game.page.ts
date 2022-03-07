@@ -1,15 +1,15 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { ViewDidEnter } from '@ionic/angular';
+import { ModalController, ViewDidEnter } from '@ionic/angular';
 import { VexedService } from '../services/vexed.service';
 import { GameService } from '../services/game.service';
+import { UiService } from '../services/ui.service';
 
 @Component({
   selector: 'app-game',
   templateUrl: 'game.page.html',
-  styleUrls: ['game.page.scss']
+  styleUrls: ['game.page.scss'],
 })
 export class GamePage implements OnInit, ViewDidEnter {
-
   // size of game board
   boardWidth = '0px';
   boardHeight = '0px';
@@ -23,8 +23,8 @@ export class GamePage implements OnInit, ViewDidEnter {
 
 
   constructor(
-    private vexed: VexedService,
-    public game: GameService
+    public vexed: VexedService,
+    public game: GameService,
   ) { }
 
   /**
@@ -37,20 +37,17 @@ export class GamePage implements OnInit, ViewDidEnter {
   }
 
   ngOnInit(): void {
-
     // when a new level event triggers (new game pack selected or level passed),
     // load the new level
-    this.vexed.newLevelEvent.subscribe( ()=> {
+    this.vexed.newLevelEvent.subscribe(() => {
       this.game.loadLevel();
     });
-
   }
 
   /**
    * Set the gameboard size and block size.
    */
   resizeGameBoard(): void {
-
     // get available view
     const innerWindow = document.querySelector('.tabs-inner');
 
@@ -72,24 +69,24 @@ export class GamePage implements OnInit, ViewDidEnter {
     // that way 10 blocks can comfortably fit onto screen.
     // below: with totalLenght of 512, newLenght = 510, remainder = 2
     const remainder = totalLenght % 10;
-    const newLength = (totalLenght - remainder);
+    const newLength = totalLenght - remainder;
 
     // set gameboard size to new lenght
     this.boardWidth = newLength + 'px';
 
     // vexed levels are also 10 blocks high at most
-    const newHeight = (newLength * 0.8);
+    const newHeight = newLength * 0.8;
     this.boardHeight = newHeight + 'px';
 
     // calculate a block size. blocks are square.
     // 10 blocks should fit comfortably on screen.
-    this.blockSize = (newLength / 10) + 'px';
+    this.blockSize = newLength / 10 + 'px';
 
     // note, we can use margin: auto to center the game board horizontally
 
     // calculate vertical offset, to center board vertically on screen
     const heightLeftOver = innerHeight - newHeight;
-    this.heightOffset = (Math.floor(heightLeftOver / 2)) + 'px';
+    this.heightOffset = Math.floor(heightLeftOver / 2) + 'px';
   }
 
   /**
@@ -98,13 +95,14 @@ export class GamePage implements OnInit, ViewDidEnter {
    */
   ionViewDidEnter(): void {
     // wait a while the the view to load
-    setTimeout( () => {
+    setTimeout(() => {
       // resize the game board
       this.resizeGameBoard();
       // load default level
       this.game.loadLevel();
     }, 500);
   }
+
 
 
 }

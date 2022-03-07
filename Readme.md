@@ -40,7 +40,14 @@ Use angular-cli-ghpages to build and deploy to githup pages.
 
 ## todo
 
-* delete data option to restart
+* show loader before ngfor in menu 
+https://stackoverflow.com/questions/35819264/angular-2-callback-when-ngfor-has-finished/51307412#51307412
+
+* create modal for selecting new pack
+* create modal for selecting available levels for pack
+* clear game data modal, this pack or all packs option.
+* ~~credits modal and don't show credits details in menu for each gamepack~~
+
 * user can select a previous level in a gamepack
 
 * disable UI while a move is being played out.
@@ -49,6 +56,10 @@ Use angular-cli-ghpages to build and deploy to githup pages.
   message dissapears when choose to undo or reset.
 
 * additional screen info, current move amount, par, best 
+
+* crosshair indicator feedback for where finger is on screen and which block is selected.
+  when block is activated, light it up, show crosshair where finger is.
+* large swipe = many moves to the left or right until block can't move or falls
 
 * add capacitor splashscreen
 * make splashscreen, icon, fav icon

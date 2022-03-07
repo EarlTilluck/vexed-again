@@ -1,11 +1,14 @@
 <ion-content [fullscreen]="true">
-
-  <div #gameBoard id="game-board" [ngStyle]="{height: boardHeight, width: boardWidth, marginTop: heightOffset}">
-
-      <app-game-block *ngFor="let block of this.game.blocks; index as i"
-        [gameBlock]="this.game.blocks[i]" [blockSize]="blockSize">
-      </app-game-block>
-
+  <div
+    id="game-board"
+    [ngStyle]="{height: boardHeight, width: boardWidth, marginTop: heightOffset}"
+  >
+    <app-game-block
+      *ngFor="let block of this.game.blocks; index as i"
+      [gameBlock]="this.game.blocks[i]"
+      [blockSize]="blockSize"
+    >
+    </app-game-block>
   </div>
 
-</ion-content>
+ </ion-content>

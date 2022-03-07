@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { MenuController } from '@ionic/angular';
-import { VexedService } from '../services/vexed.service';
+import { DataService } from '../services/data.service';
+import { UiService } from '../services/ui.service';
 
 
 @Component({
@@ -10,44 +11,75 @@ import { VexedService } from '../services/vexed.service';
 })
 export class SidemenuComponent implements OnInit {
 
-  // mode of the side menu.
-  selectGamePackMode = false;
+  // dark mode enabled?
+  darkMode = true;
 
-  // vexed levels
-  vexedLevels = [];
+  // play sounds
+  isSoundOn = true;
 
   constructor(
     private menu: MenuController,
-    private vexed: VexedService
+    private ui: UiService,
+    private data: DataService,
+    private renderer: Renderer2
   ) {}
 
   ngOnInit(): void {
-    this.vexedLevels = this.vexed.vexedLevels;
-  }
-
-
-  toggleSelectMode(): void {
-    this.selectGamePackMode = !this.selectGamePackMode;
+    this.setDarkMode();
   }
 
   /**
-   * Select a game pack to play
-   *
-   * @param id index in the game pack array
+   * Close menu button
    */
-  onSelectPack(id): void {
-    this.menu.close('side-menu');
-    this.vexed.selectGamePack(id);
-  }
-
-
-  resetMenu(): void {
-    this.selectGamePackMode = false;
-  }
-
   onCloseMenu(): void {
     this.menu.close('side-menu');
   }
 
+  /**
+   * Select new game pack
+   */
+  onSelectGamePack() {
+    this.menu.close('side-menu');
+    // show spinner before content loads.
+    this.ui.showSpinner();
+  }
+
+
+  /**
+   * toggle dark mode
+   */
+  onToggleDarkMode(): void {
+    // toggle and save the new mode
+    this.data.toggleDarkMode();
+    // update css
+    this.setDarkMode();
+  }
+
+  /**
+   * Read the value of dark mode saved in
+   * local storage and set the css styles
+   * accordingly
+   */
+  setDarkMode() {
+    const darkMode = this.data.getDarkMode();
+    try {
+      this.darkMode = JSON.parse(darkMode);
+    } catch(e) {
+      this.darkMode = true; // dark mode by default
+    }
+    if(this.darkMode === true) {
+      this.renderer.setAttribute(document.body, 'color-theme', 'dark');
+    } else {
+      this.renderer.setAttribute(document.body, 'color-theme', 'light');
+    }
+  }
+
+
+  /**
+   * toggle the sounds on/off
+   */
+  onToggleSounds() {
+    // todo
+  }
 
 }

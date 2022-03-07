@@ -112,4 +112,37 @@ export class DataService {
     return [];
   }
 
+
+  /**
+   * Switch the value of dark mode and save it.
+   */
+  toggleDarkMode(): void {
+    let darkMode = this.getDarkMode();
+    if (darkMode === 'true') {
+      darkMode = 'false';
+    } else {
+      darkMode = 'true';
+    }
+    try {
+      localStorage.setItem('dark-mode', darkMode);
+    } catch (e) {
+      console.log(this.localStorageError);
+    }
+  }
+
+  /**
+   * Get value of dark mode.
+   * Returns true if no value was set before, making
+   * the app dark mode by default.
+   *
+   * @returns string, true if dark mode enabled.
+   */
+  getDarkMode(): string {
+    const darkMode = localStorage.getItem('dark-mode');
+    if (darkMode !== null) {
+      return darkMode;
+    }
+    return 'true'; // dark mode by default
+  }
+
 }
