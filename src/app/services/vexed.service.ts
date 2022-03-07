@@ -111,7 +111,7 @@ export class VexedService {
     let level = this.data.getProgressForGamePack(gamePackId);
     // check if out of bounds (past last level)
     if(level >= this.currentPack.levels.length) {
-      level = this.currentPack.levels.length -1;
+      level = this.currentPack.levels.length -1; // set level to end level
     }
     // set level
     this.currentLevelId = level;
@@ -170,7 +170,6 @@ export class VexedService {
       // update progress
       this.data.saveProgressForGamePack(this.currentPackId, this.currentLevelId);
       this.newLevelEvent.emit();
-      console.log(this.currentLevelId);
       return true;
     }
     return false;

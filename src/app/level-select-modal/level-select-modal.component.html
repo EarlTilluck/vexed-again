@@ -12,29 +12,21 @@
     </ion-header>
 
     <ion-content>
-
-      <ion-list>
-          <ion-item button="true"
-            *ngFor="let level of this.vexed.currentPack.levels; index as i"
-            (click)="onSelectLevel(i)"
-          >
-            <ion-icon slot="start" [name]="passArray[i] ? 'checkmark-circle-outline' : 'ellipse-outline'"></ion-icon>
-            <ion-label>Level {{i + 1}} Par: 18 Best: 12 {{passArray[i]}}</ion-label>
-          </ion-item>
-        </ion-list>
-
       <ion-grid>
-        <ion-row
-          *ngFor="let level of this.vexed.currentPack.levels; index as i"
-          (click)="onSelectLevel(i)"
-        >
+        <ion-row>
           <ion-col>
-            <ion-card button class="ion-padding">
-              <div style="display: flex; align-items: center">
-                <h4>Level {{ i + 1}}</h4>
-              </div>
-              <h6>{{passArray[i] ? 'Passed' : ''}} par: 6, best 9</h6>
-            </ion-card>
+            <ion-list>
+              <ion-item
+                button="true" [disabled]="i <= this.lastAvailableLevel ? 'false' : 'true'"
+                *ngFor="let level of this.vexed.currentPack.levels; index as i"
+                (click)="onSelectLevel(i)"
+              >
+                <ion-icon slot="start"
+                  [name]="passArray[i] ? 'checkbox-outline' : 'square-outline'">
+                </ion-icon>
+                <ion-label><h2>Level {{ i + 1 }}</h2><h3>Par: 18 Best: 12</h3></ion-label>
+              </ion-item>
+            </ion-list>
           </ion-col>
         </ion-row>
       </ion-grid>

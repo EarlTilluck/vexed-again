@@ -41,7 +41,7 @@
         <ion-toggle [(ngModel)]="isSoundOn" (ionChange)="onToggleSounds()"></ion-toggle>
       </ion-item>
 
-      <ion-item style="cursor: pointer">
+      <ion-item style="cursor: pointer" (click)="onClearGameData()">
         <ion-icon slot="start" name="trash-outline"></ion-icon>
         <ion-label>Clear Game Data.</ion-label>
       </ion-item>

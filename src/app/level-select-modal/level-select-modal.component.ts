@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, ToastController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { Level } from '../models/level.model';
-import { LevelPack } from '../models/LevelPack.model';
 import { UiService } from '../services/ui.service';
 import { VexedService } from '../services/vexed.service';
 
@@ -13,7 +12,8 @@ import { VexedService } from '../services/vexed.service';
 export class LevelSelectModalComponent implements OnInit {
 
 
-  selectedLevel = '0';
+  // last level available to be played
+  lastAvailableLevel = 0;
 
   // array, each value corresponds to 'level passed' value
   // in corresponding level in levels array in
@@ -22,7 +22,6 @@ export class LevelSelectModalComponent implements OnInit {
 
   constructor(
     private modalController: ModalController,
-    private toastController: ToastController,
     public vexed: VexedService,
     private ui: UiService
   ) { }
@@ -30,7 +29,7 @@ export class LevelSelectModalComponent implements OnInit {
   ngOnInit() {
 
     // load data on init
-    // selectLevels event is not captured on first load.
+    // selectLevels event may not be captured on first load.
     this.loadLevelData();
 
     // load data when menu button clicked
@@ -47,9 +46,19 @@ export class LevelSelectModalComponent implements OnInit {
      // get levels for currently selected game pack...
      const levels: Array<Level> = this.vexed.currentPack.levels;
      // for each level find and place 'already passed' value
+     this.lastAvailableLevel = 0;
      for (let i = 0; i < levels.length; i++) {
        this.passArray[i] = this.vexed.getPass(i);
+       if ( this.passArray[i] === true) {
+         this.lastAvailableLevel = i;
+       }
      }
+     // add one to last available level so we can
+     // select the first unpassed level to play as well.
+     if(this.lastAvailableLevel !== 0) {
+       this.lastAvailableLevel++;
+     }
+     console.log((this.lastAvailableLevel));
    }
 
 
@@ -68,11 +77,4 @@ export class LevelSelectModalComponent implements OnInit {
     this.modalController.dismiss();
   }
 
-  async presentToast() {
-    const toast = await this.toastController.create({
-      message: 'You must clear previous level first.',
-      duration: 2000
-    });
-    toast.present();
-  }
 }

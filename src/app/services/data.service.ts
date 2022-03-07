@@ -176,4 +176,10 @@ export class DataService {
     return false;
   }
 
+  /**
+   * Delete all data from localstorage
+   */
+  clearAll() {
+    localStorage.clear();
+  }
 }

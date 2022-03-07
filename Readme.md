@@ -40,27 +40,17 @@ Use angular-cli-ghpages to build and deploy to githup pages.
 
 ## todo
 
-
-* Save Last Passed level (modify save progress) add saveLastSelectedLevel to data service, show toast when 
-bad level select and only select passed levels or first unpassed level.
-
-* when a level is cleared, mark that as cleared so it is selectable.
-
-* user can select a previous level in a gamepack
-
-
-* clear game data modal, this pack or all packs option.
-
 * implement progress indicators in menu, when selecting game pack.
 
 * show current game pack and current level somewhere on screen (near bottom?)
+* additional screen info, current move amount, par, best 
 
-* disable UI while a move is being played out.
+
+* disable gestures and ui while a move is being played out.
 
 * You win shown on screen when last level reached. 
   message dissapears when choose to undo or reset.
 
-* additional screen info, current move amount, par, best 
 
 * crosshair indicator feedback for where finger is on screen and which block is selected.
   when block is activated, light it up, show crosshair where finger is.
@@ -73,8 +63,6 @@ bad level select and only select passed levels or first unpassed level.
 * nicer transition for gameboard when load and resized (css);
   
 * implement sound and toggle sound button
-
-
 
 * Add images and graphics. blocks are a-h abcdefgh which is 8 different blocks.
 

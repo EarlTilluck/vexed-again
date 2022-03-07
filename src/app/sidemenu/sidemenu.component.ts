@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import { UiService } from '../services/ui.service';
 
@@ -19,10 +19,11 @@ export class SidemenuComponent implements OnInit {
 
   constructor(
     private menu: MenuController,
+    private alertController: AlertController,
     private ui: UiService,
     private data: DataService,
     private renderer: Renderer2
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.setDarkMode();
@@ -73,10 +74,10 @@ export class SidemenuComponent implements OnInit {
     const darkMode = this.data.getDarkMode();
     try {
       this.darkMode = JSON.parse(darkMode);
-    } catch(e) {
+    } catch (e) {
       this.darkMode = true; // dark mode by default
     }
-    if(this.darkMode === true) {
+    if (this.darkMode === true) {
       this.renderer.setAttribute(document.body, 'color-theme', 'dark');
     } else {
       this.renderer.setAttribute(document.body, 'color-theme', 'light');
@@ -91,6 +92,44 @@ export class SidemenuComponent implements OnInit {
     // todo
     // this function not needed, since isSoundOn is bound to toggle button
     // if ( this. sound is on... play ) else don't.
+  }
+
+  /**
+   * Present an alert,
+   * If user confirms, delete everything from
+   * local storagee.
+   */
+  async onClearGameData() {
+
+    // close menu
+    this.menu.close('side-menu');
+
+    // present alert
+    const alert = await this.alertController.create({
+      header: 'Delete Saved Game Data?',
+      message: 'Progress for all levels will be reset. This <strong>Cannot be undone.<strong>',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          id: 'cancel-button',
+          handler: () => {
+            //console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Okay',
+          id: 'confirm-button',
+          handler: () => {
+            // clear data, the emit event to reset game board
+            this.data.clearAll();
+            this.ui.didClearSaveData.emit(); // subscribed by game.page.ts
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
 }
