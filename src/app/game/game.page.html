@@ -1,20 +1,21 @@
 <ion-content scrollX="false" scrollY="false">
-  <ion-card [ngStyle]="{height: this.cardHeight, width: this.cardWidth }">
+  <ion-card [ngStyle]="{height: this.ui.cardHeight, width: this.ui.cardWidth }">
     <ion-card-header>
       <ion-card-title>{{this.vexed.currentLevel.name}}</ion-card-title>
+      <ion-card-subtitle>{{this.ui.cursorLeft}}, {{this.ui.cursorTop}}</ion-card-subtitle>
       <ion-card-subtitle>Moves: {{this.game.currentMoveTotal}}, Par: {{this.game.currentPar}}, Best: {{this.game.currentBest}}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <div
         id="game-board"
-        [ngStyle]="{height: boardHeight, width: boardWidth, marginTop: heightOffset}"
+        [ngStyle]="{height: this.ui.boardHeight, width: this.ui.boardWidth, marginTop: this.ui.heightOffset}"
       >
         <app-game-block
           *ngFor="let block of this.game.blocks; index as i"
           [gameBlock]="this.game.blocks[i]"
-          [blockSize]="blockSize"
         >
         </app-game-block>
+        <app-cursor></app-cursor>
       </div>
   </ion-card-content>
 </ion-card>

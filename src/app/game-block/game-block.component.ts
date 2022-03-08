@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, O
 import { Gesture, GestureController, GestureDetail } from '@ionic/angular';
 import { Block } from '../models/block.model';
 import { GameService } from '../services/game.service';
-import { VexedService } from '../services/vexed.service';
+import { UiService } from '../services/ui.service';
 
 @Component({
   selector: 'app-game-block',
@@ -16,23 +16,23 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
   // unique identifier for this block.
   @Input() gameBlock: Block;
 
-  // size of block,
-  @Input() blockSize = '0px';
-
   // current position (css)
-  left = '0';
-  top = '0';
+  left = '0px';
+  top = '0px';
 
   // current opacity (css)
   opacity = 1;
+
+  // is selected?
+  selected = 'not-selected';
 
   // for gesture input
   gesture: Gesture;
 
   constructor(
     private gestureCtrl: GestureController,
-    private vexed: VexedService,
-    public game: GameService
+    public game: GameService,
+    public ui: UiService
   ) { }
 
   /**
@@ -45,6 +45,11 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    // subscribe to deselect all blocks event
+    this.ui.deselectAllBlocks.subscribe(()=>{
+      this.selected = 'not-selected';
+    });
+    // move into position
     this.moveToPosition();
   }
 
@@ -55,6 +60,12 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
       el: this.blockElementRef.nativeElement,
       threshold: 5,
       gestureName: 'game-gesture',
+      passive: false,
+      direction: 'x',
+      gesturePriority: 99,
+      disableScroll: true,
+      onStart: ev => this.onGestureStart(ev),
+      onMove: ev => this.onGestureMove(ev),
       onEnd: ev => this.onGestureEnd(ev)
     }, true);
     // The `true` above ensures that callbacks run inside NgZone.
@@ -71,19 +82,102 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
-  // what to do when swipe a block
-  onGestureEnd(ev: GestureDetail) {
+  /**
+   * When clicked, move cursor here
+   */
+  onClick() {
+    // deselect all blocks
+    this.ui.deselectAllBlocks.emit();
+    // run same code as startGesture
+    this.onGestureStart(null);
+  }
+
+
+  /**
+   * what to do when start swiped.
+   *
+   * @param ev Gesture event
+   */
+  onGestureStart(ev: GestureDetail): void {
+
+    // if movable block
+    if(this.gameBlock.type !== 'X' && this.gameBlock.type !== 'Y') {
+      // set cursor to hover over this block.
+      this.ui.cursorLeft = this.left;
+      this.ui.cursorTop = this.top;
+      // fade in cursor
+      this.ui.cursorOpacity = 1;
+      this.selected = 'selected';
+    }
+  }
+
+
+  /**
+   * Move cursor along with swipe
+   *
+   * @param ev Gesture event
+   */
+  onGestureMove(ev: GestureDetail): void {
+
+    // get left value
+    let currentLeft = parseInt(this.left.replace('px', ''), 10);
+    // get delta and distance of swipe
+    const deltaX = Math.floor(ev.deltaX);
+    const distance = Math.abs(deltaX);
+    // get size of block
+    const blockSize = parseInt(this.ui.blockSize.replace('px', ''), 10);
+    // set new left
+    // if distance is within single block size (give or take),
+    // then set cursor to adjacent block
+    if(distance <= (blockSize + 50)) {
+      if(deltaX > 0) {
+        currentLeft = currentLeft + blockSize;
+      } else {
+        currentLeft = currentLeft - blockSize;
+      }
+    } else {
+      // distance is outside of adjacent block, so set it
+      // to where the current gesture location
+      currentLeft = currentLeft + deltaX;
+    }
+    this.ui.cursorLeft = currentLeft + 'px';
+
+  }
+
+
+  /**
+   * What to do when a swipe of block occured.
+   *
+   * @param ev Gesture event
+   */
+  onGestureEnd(ev: GestureDetail): void {
     // do gesture only if is a movable block
     if (this.gameBlock.type !== 'X' && this.gameBlock.type !== 'Y') {
 
-      // if swipted to the right, then...
+      // get distance, make it positive number.
+      // note: velocity is negative when swiped to the left...
+      const distance = Math.abs(ev.deltaX);
+      const blockSize = parseInt(this.ui.blockSize.replace('px', ''), 10);
+      if (distance > (blockSize + 50)) {
+        console.log('big swipe');
+      } else {
+        console.log('small swipe');
+      }
+
+      // swipe right or left based on deltaX
       if (ev.deltaX > 0) {
         this.move('right');
       } else {
         this.move('left');
       }
     }
+    // fade out cursor
+    this.ui.cursorOpacity = 0;
+    this.selected = 'not-selected';
+
   }
+
+
 
 
   /**
@@ -92,7 +186,7 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   moveToPosition(): void {
     // get size of block.
-    let size = parseInt(this.blockSize.replace('px', ''), 10);
+    let size = parseInt(this.ui.blockSize.replace('px', ''), 10);
     if (isNaN(size)) {
       size = 0;
     }

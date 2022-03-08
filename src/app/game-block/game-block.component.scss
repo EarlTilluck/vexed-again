@@ -18,11 +18,17 @@
 .block {
   position: absolute;
   transition: top 0.25s linear, left 0.5s ease-in, opacity 0.5s ease-in;
+  user-select: none; // disable selecting text (solves issue with gestures in web version)
+}
+
+.selected {
+  border: 1px solid aqua;
 }
 
 .X {
   background-color: slategrey;
 }
+
 .Y {
   display: none;
   background-color: yellow;
@@ -30,41 +36,41 @@
 
 .a {
   background-color: red;
-  cursor: pointer;
+  cursor: move;
 }
 
 .b {
   background-color: greenyellow;
-  cursor: pointer;
+  cursor: move;
 
 }
 
 .c {
   background-color: brown;
-  cursor: pointer;
+  cursor: move;
 }
 
 .d {
   background-color: salmon;
-  cursor: pointer;
+  cursor: move;
 }
 
 .e {
   background-color: skyblue;
-  cursor: pointer;
+  cursor: move;
 }
 
 .f {
   background-color: olive;
-  cursor: pointer;
+  cursor: move;
 }
 
 .g {
   background-color: plum;
-  cursor: pointer;
+  cursor: move;
 }
 
 .h {
   background-color: violet;
-  cursor: pointer;
+  cursor: move;
 }

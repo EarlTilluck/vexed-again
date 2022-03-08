@@ -1,8 +1,9 @@
-<div #block [ngClass]="['block', this.gameBlock.type]" [ngStyle]=" {
-  height: blockSize,
-  width: blockSize,
-  left: left,
-  top: top,
-  opacity: opacity
-} ">
+<div #block [ngClass]="['block', this.gameBlock.type, this.selected]" [ngStyle]=" {
+  height: this.ui.blockSize,
+  width: this.ui.blockSize,
+  left: this.left,
+  top: this.top,
+  opacity: this.opacity
+}"
+(click)="onClick()">
 </div>

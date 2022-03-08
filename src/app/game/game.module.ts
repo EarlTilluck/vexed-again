@@ -6,6 +6,7 @@ import { GamePage } from './game.page';
 
 import { GamePageRoutingModule } from './game-routing.module';
 import { GameBlockComponent } from '../game-block/game-block.component';
+import { CursorComponent } from '../cursor/cursor.component';
 
 @NgModule({
   imports: [
@@ -14,6 +15,6 @@ import { GameBlockComponent } from '../game-block/game-block.component';
     FormsModule,
     GamePageRoutingModule
   ],
-  declarations: [GamePage, GameBlockComponent]
+  declarations: [GamePage, GameBlockComponent, CursorComponent]
 })
 export class GamePageModule {}

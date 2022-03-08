@@ -10,26 +10,12 @@ import { UiService } from '../services/ui.service';
   styleUrls: ['game.page.scss'],
 })
 export class GamePage implements OnInit, ViewDidEnter {
-  // size of game board
-  boardWidth = '0px';
-  boardHeight = '0px';
-
-  // size of screen
-  cardHeight = '0';
-  cardWidth = '0';
-
-  // size of blocks (blocks are square)
-  blockSize = '0px';
-
-  // offset for displaying blocks on screen.
-  // used for centering the blocks
-  heightOffset = '0px';
 
 
   constructor(
     public vexed: VexedService,
     public game: GameService,
-    private ui: UiService
+    public ui: UiService
   ) { }
 
   /**
@@ -69,8 +55,8 @@ export class GamePage implements OnInit, ViewDidEnter {
     innerHeight = innerWindow.clientHeight;
 
     // set size of the ion card
-    this.cardWidth = innerWidth + 'px';
-    this.cardHeight = innerHeight + 'px';
+    this.ui.cardWidth = innerWidth + 'px';
+    this.ui.cardHeight = innerHeight + 'px';
 
     // portrait mode or landscape?
     // in portrait, there is more height than width,
@@ -90,15 +76,15 @@ export class GamePage implements OnInit, ViewDidEnter {
     const newLength = totalLenght - remainder;
 
     // set gameboard size to new lenght
-    this.boardWidth = newLength + 'px';
+    this.ui.boardWidth = newLength + 'px';
 
     // vexed levels are also 10 blocks high at most
     const newHeight = newLength * 0.8;
-    this.boardHeight = newHeight + 'px';
+    this.ui.boardHeight = newHeight + 'px';
 
     // calculate a block size. blocks are square.
     // 10 blocks should fit comfortably on screen.
-    this.blockSize = newLength / 10 + 'px';
+    this.ui.blockSize = newLength / 10 + 'px';
 
     // note, we can use margin: auto to center the game board horizontally
 
@@ -106,7 +92,7 @@ export class GamePage implements OnInit, ViewDidEnter {
     let heightLeftOver = innerHeight - newHeight;
     // remove height of ion card header and tab bar
     heightLeftOver = heightLeftOver - 80 - 56;
-    this.heightOffset = Math.floor(heightLeftOver / 2) + 'px';
+    this.ui.heightOffset = Math.floor(heightLeftOver / 2) + 'px';
   }
 
   /**
