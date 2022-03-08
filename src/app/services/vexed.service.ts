@@ -193,4 +193,32 @@ export class VexedService {
     return this.data.getPassForLevel(this.currentPackId, levelId);
   }
 
+  /**
+   * get whether a level has already been passed.
+   */
+  getPassForPackAndLevel(packId: number, levelId: number): boolean {
+    return this.data.getPassForLevel(packId, levelId);
+  }
+
+
+  setBest(newBestTry: number) {
+    // check if new try is less than previous best
+    // or if there was no previous best try (best try value is 0)
+    const currentBest = this.getBest(this.currentLevelId);
+    if(currentBest === 0 || currentBest > newBestTry) {
+      this.data.setBestForLevel(this.currentPackId, this.currentLevelId, newBestTry);
+    }
+  }
+
+  /**
+   * Get best try for give level in current pack
+   *
+   * @param levelId
+   * @returns best try
+   */
+  getBest(levelId: number) {
+    return this.data.getBestForLevel(this.currentPackId, levelId);
+  }
+
+
 }// end class

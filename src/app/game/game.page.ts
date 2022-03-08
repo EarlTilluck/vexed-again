@@ -14,6 +14,10 @@ export class GamePage implements OnInit, ViewDidEnter {
   boardWidth = '0px';
   boardHeight = '0px';
 
+  // size of screen
+  cardHeight = '0';
+  cardWidth = '0';
+
   // size of blocks (blocks are square)
   blockSize = '0px';
 
@@ -64,6 +68,10 @@ export class GamePage implements OnInit, ViewDidEnter {
     innerWidth = innerWindow.clientWidth;
     innerHeight = innerWindow.clientHeight;
 
+    // set size of the ion card
+    this.cardWidth = innerWidth + 'px';
+    this.cardHeight = innerHeight + 'px';
+
     // portrait mode or landscape?
     // in portrait, there is more height than width,
     // therefore we calculate block size based on width available.
@@ -71,7 +79,8 @@ export class GamePage implements OnInit, ViewDidEnter {
     const isPortrait = innerWidth <= innerHeight ? true : false;
 
     // based on isPortrait, get total lenght of shorter dimension of screen
-    const totalLenght = isPortrait ? innerWidth : innerHeight;
+    let totalLenght = isPortrait ? innerWidth : innerHeight;
+    totalLenght = totalLenght - 32; // substract the value of ion card padding
 
     // vexed levels can be 10 blocks wide at most
     // board lenght should be a multiple of 10
@@ -94,7 +103,9 @@ export class GamePage implements OnInit, ViewDidEnter {
     // note, we can use margin: auto to center the game board horizontally
 
     // calculate vertical offset, to center board vertically on screen
-    const heightLeftOver = innerHeight - newHeight;
+    let heightLeftOver = innerHeight - newHeight;
+    // remove height of ion card header and tab bar
+    heightLeftOver = heightLeftOver - 80 - 56;
     this.heightOffset = Math.floor(heightLeftOver / 2) + 'px';
   }
 

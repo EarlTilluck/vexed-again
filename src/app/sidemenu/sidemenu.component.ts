@@ -43,6 +43,7 @@ export class SidemenuComponent implements OnInit {
     this.menu.close('side-menu');
     // show spinner before content loads.
     this.ui.hideSpinner.emit(false);
+    this.ui.selectGamePack.emit();
   }
 
   /**

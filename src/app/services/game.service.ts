@@ -23,6 +23,10 @@ export class GameService {
   // Array of blocks that should be displayed on screen
   blocks: Array<Block> = [];
 
+  // score board info
+  currentBest = 'n/a';
+  currentPar = 0;
+  currentMoveTotal = 0;
 
   constructor(
     private vexed: VexedService
@@ -36,6 +40,18 @@ export class GameService {
    *
    */
   loadLevel(): void {
+
+    // load par for this level
+    this.currentPar = this.vexed.currentLevel.par;
+    //reset moves, when checking history this will be updated.
+    this.currentMoveTotal = 0;
+    // get best for this level
+    const best = this.vexed.getBest(this.vexed.currentLevelId);
+    if(best === 0) {
+      this.currentBest = 'n/a';
+    } else {
+      this.currentBest = best + '';
+    }
 
     // clear previous board state
     this.blocks = [];
@@ -55,9 +71,11 @@ export class GameService {
     // get the history for the current level
     this.history = this.vexed.getHistory();
     // if history is not empty,
-    // then set the current state as the first block array in history
     if (this.history !== null && this.history.length > 0) {
+      // then set the current state as the first block array in history
       this.blocks = this.cloneBlocks(this.history[0]);
+      // and set move total according to number of history states
+      this.currentMoveTotal = this.history.length -1;
     } else {
       // if no history, then load the board data from the level string
       // for each line...
@@ -113,6 +131,8 @@ export class GameService {
         if (adjacentBlock.type === 'Y') {
           // the current block can be swapped with the adjacent block.
           this.swapBlock(gameBlock, adjacentBlock);
+          // add move
+          this.currentMoveTotal++;
           // wait a second for css animation to finish, then...
           setTimeout(() => {
             // find blocks that should fall and have them fall
@@ -172,8 +192,6 @@ export class GameService {
       this.vanishBlocks();
     }
   }
-
-
 
 
   /**
@@ -283,6 +301,8 @@ export class GameService {
     this.vexed.saveHistory(this.history);
     // mark this level as passed
     this.vexed.passLevel();
+    // set best for this level
+    this.vexed.setBest(this.currentMoveTotal);
     // load next level,
     // returns false if we are at the end of the game pack
     if(this.vexed.loadNextLevel() === false ) {
@@ -322,6 +342,7 @@ export class GameService {
       this.history.shift(); // remove current state
       this.blocks = this.cloneBlocks(this.history[0]); // set blocks to state before
       this.vexed.saveHistory(this.history);
+      this.currentMoveTotal--; // decrement move total
     }
   }
 
@@ -338,6 +359,8 @@ export class GameService {
     this.blocks = this.cloneBlocks(this.history[0]);
     // save the new history
     this.vexed.saveHistory(this.history);
+    // reset move total
+    this.currentMoveTotal = 0;
   }
 
 

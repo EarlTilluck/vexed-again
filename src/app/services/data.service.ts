@@ -168,13 +168,47 @@ export class DataService {
    * @param levelId
    * @returns true if level already completed.
    */
-  getPassForLevel(packId: number, levelId: number) {
+  getPassForLevel(packId: number, levelId: number): boolean {
     const passedString = localStorage.getItem('levelPassed-' + packId + '-level-' + levelId);
     if (passedString !== null && passedString === 'true') {
       return true;
     }
     return false;
   }
+
+
+  /**
+   * Set the best try for a level in a gamepack
+   *
+   * @param packId
+   * @param levelId
+   * @param best best attempt
+   */
+  setBestForLevel(packId: number, levelId: number, best: number): void {
+    try {
+      localStorage.setItem('levelBest-' + packId + '-level-' + levelId, best + '');
+    } catch (e) {
+      console.log(this.localStorageError);
+    }
+  }
+
+
+
+  /**
+   * Get best try for given pack level
+   *
+   * @param packId
+   * @param levelId
+   * @returns current best attempt
+   */
+  getBestForLevel(packId: number, levelId: number): number {
+    const best = parseInt(localStorage.getItem('levelBest-' + packId + '-level-' + levelId), 10);
+    if (isNaN(best)) {
+      return 0;
+    }
+    return best;
+  }
+
 
   /**
    * Delete all data from localstorage

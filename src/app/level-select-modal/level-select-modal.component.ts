@@ -19,6 +19,10 @@ export class LevelSelectModalComponent implements OnInit {
   // in corresponding level in levels array in
   // current game pack in vexed service.
   passArray: Array<boolean> = [];
+  // array, each value corresponds to best try ...
+  bestArray: Array<string> =[];
+  // array, each value corresponds to par ...
+  parArray: Array<number> = [];
 
   constructor(
     private modalController: ModalController,
@@ -46,19 +50,24 @@ export class LevelSelectModalComponent implements OnInit {
      // get levels for currently selected game pack...
      const levels: Array<Level> = this.vexed.currentPack.levels;
      // for each level find and place 'already passed' value
-     this.lastAvailableLevel = 0;
+     // as well as best try and par
+     this.lastAvailableLevel = -1;
      for (let i = 0; i < levels.length; i++) {
        this.passArray[i] = this.vexed.getPass(i);
+       const best = this.vexed.getBest(i);
+       if (best === 0) {
+         this.bestArray[i] = 'n/a';
+       } else {
+         this.bestArray[i] = this.vexed.getBest(i) + '';
+       }
+       this.parArray[i] = this.vexed.currentPack.levels[i].par;
        if ( this.passArray[i] === true) {
          this.lastAvailableLevel = i;
        }
      }
      // add one to last available level so we can
      // select the first unpassed level to play as well.
-     if(this.lastAvailableLevel !== 0) {
-       this.lastAvailableLevel++;
-     }
-     console.log((this.lastAvailableLevel));
+     this.lastAvailableLevel++;
    }
 
 

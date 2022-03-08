@@ -24,7 +24,7 @@
                 <ion-icon slot="start"
                   [name]="passArray[i] ? 'checkbox-outline' : 'square-outline'">
                 </ion-icon>
-                <ion-label><h2>Level {{ i + 1 }}</h2><h3>Par: 18 Best: 12</h3></ion-label>
+                <ion-label><h2>Level {{ i + 1 }}</h2><h3>Par: {{this.parArray[i]}} Best: {{this.bestArray[i]}}</h3></ion-label>
               </ion-item>
             </ion-list>
           </ion-col>

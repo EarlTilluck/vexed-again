@@ -8,6 +8,7 @@ export class UiService {
 
   // events
   selectLevels = new EventEmitter();
+  selectGamePack = new EventEmitter();
   hideSpinner = new EventEmitter<boolean>();
   didClearSaveData = new EventEmitter();
 

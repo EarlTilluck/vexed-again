@@ -40,12 +40,6 @@ Use angular-cli-ghpages to build and deploy to githup pages.
 
 ## todo
 
-* implement progress indicators in menu, when selecting game pack.
-
-* show current game pack and current level somewhere on screen (near bottom?)
-* additional screen info, current move amount, par, best 
-
-
 * disable gestures and ui while a move is being played out.
 
 * You win shown on screen when last level reached. 
