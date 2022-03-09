@@ -17,6 +17,7 @@ Original game design by The Vexed Team
 * [Ionic UI](https://ionicframework.com/docs/components)
 * [Capacitor](https://capacitorjs.com/docs)
 * [@capacitor/splash-screen](https://capacitorjs.com/docs/apis/splash-screen)
+* [cordova-res](https://www.npmjs.com/package/cordova-res)
 
 ## Development notes
 ### Install
@@ -30,6 +31,9 @@ Run `ionic serve` or `npm start` to run the web development server.
 Run `npm run start-android` to launch to android phone or emulator with hot reload  
 ### Andoid Build
 Run `ionic capacitor build --prod` 
+#### Splash Screen and Icon
+Install `cordova-res` and refer to [documentation](https://www.npmjs.com/package/cordova-res) on how to use.  
+Run `cordova-res android --skip-config --copy`;
 ### IOS Build
 Not available until I get a Mac computer and Iphone.
 ### Deploy to Github Pages
@@ -40,25 +44,23 @@ Use angular-cli-ghpages to build and deploy to githup pages.
 
 ## todo
 
-* disable gestures and ui while a move is being played out.
 
 * You win shown on screen when last level reached. 
   message dissapears when choose to undo or reset.
 
-
-* crosshair indicator feedback for where finger is on screen and which block is selected.
-  when block is activated, light it up, show crosshair where finger is.
-* large swipe = many moves to the left or right until block can't move or falls
-
 * add capacitor splashscreen
 * make splashscreen, icon, fav icon
+* Add images and graphics. blocks are a-h abcdefgh which is 8 different blocks.
+
+
 * add help and how to play, about.
 
 * nicer transition for gameboard when load and resized (css);
   
 * implement sound and toggle sound button
 
-* Add images and graphics. blocks are a-h abcdefgh which is 8 different blocks.
+
+* thourogh test for jank and glitches.
 
 * change the homepage in description part of package.json.
 

@@ -23,10 +23,7 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
   // current opacity (css)
   opacity = 1;
 
-  // is selected?
-  selected = 'not-selected';
-
-  // for gesture input
+  // Gesture data
   gesture: Gesture;
 
   constructor(
@@ -45,10 +42,6 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    // subscribe to deselect all blocks event
-    this.ui.deselectAllBlocks.subscribe(()=>{
-      this.selected = 'not-selected';
-    });
     // move into position
     this.moveToPosition();
   }
@@ -83,32 +76,27 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * When clicked, move cursor here
-   */
-  onClick() {
-    // deselect all blocks
-    this.ui.deselectAllBlocks.emit();
-    // run same code as startGesture
-    this.onGestureStart(null);
-  }
-
-
-  /**
    * what to do when start swiped.
    *
    * @param ev Gesture event
    */
   onGestureStart(ev: GestureDetail): void {
 
-    // if movable block
-    if(this.gameBlock.type !== 'X' && this.gameBlock.type !== 'Y') {
-      // set cursor to hover over this block.
-      this.ui.cursorLeft = this.left;
-      this.ui.cursorTop = this.top;
-      // fade in cursor
-      this.ui.cursorOpacity = 1;
-      this.selected = 'selected';
+    // if gesture blocked, do nothing
+    if (this.ui.blockFor !== '') {
+      return;
     }
+    // if block is not movable, do nothing
+    if (this.gameBlock.movable === false) {
+      return;
+    }
+    // start gesture blocking
+    this.ui.blockFor = this.gameBlock.blockId;
+    // set cursor to hover over this block.
+    this.ui.cursorLeft = this.left;
+    this.ui.cursorTop = this.top;
+    // fade in cursor
+    this.ui.cursorOpacity = 1;
   }
 
 
@@ -119,29 +107,68 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   onGestureMove(ev: GestureDetail): void {
 
-    // get left value
+    // do nothing if gesture isn't for current moving block
+    if (this.ui.blockFor !== this.gameBlock.blockId) {
+      return;
+    }
+
+    // do nothing for unmovable blocks
+    if(this.gameBlock.movable === false) {
+      return;
+    }
+
+    // get current left value
     let currentLeft = parseInt(this.left.replace('px', ''), 10);
-    // get delta and distance of swipe
+    // get deltaX, this is the distance the cursor traveled
+    // it is a positive number if user swipped right, and negative if user swipped left
     const deltaX = Math.floor(ev.deltaX);
+    // convert deltaX to positive number to distance travelled
     const distance = Math.abs(deltaX);
     // get size of block
     const blockSize = parseInt(this.ui.blockSize.replace('px', ''), 10);
-    // set new left
-    // if distance is within single block size (give or take),
-    // then set cursor to adjacent block
-    if(distance <= (blockSize + 50)) {
-      if(deltaX > 0) {
-        currentLeft = currentLeft + blockSize;
-      } else {
-        currentLeft = currentLeft - blockSize;
-      }
-    } else {
-      // distance is outside of adjacent block, so set it
-      // to where the current gesture location
-      currentLeft = currentLeft + deltaX;
-    }
-    this.ui.cursorLeft = currentLeft + 'px';
+    // set new left based on distance travelled and direction.
+    // find how many blocks worth of distance traveled
+    const blocksDistance = (Math.floor(distance/blockSize))+1;
 
+    // find furthest block to highlight along distance
+    // repeat for each empty block along distance
+    let positionToCheck = 0;
+    let distanceToMove = 0;
+    for(let i=1; i<=blocksDistance; i++) {
+      // if right or left swipe... get next block position
+      if(deltaX > 0) {
+        positionToCheck = this.gameBlock.position + i;
+      } else {
+        positionToCheck = this.gameBlock.position - i;
+      }
+      // get block at that position
+      const blockUnderCursor = this.game.getBlock(this.gameBlock.line, positionToCheck);
+      // if block is an empty space, the cursor can move into that space
+      if (blockUnderCursor !== null && blockUnderCursor.type === 'Y') {
+        distanceToMove++;
+      } else {
+        // break out of for loop if encountered solid block
+        i = blocksDistance + 1;
+      }
+    }
+
+    // if swiped right or left ...
+    // update direction and cursor position
+    if (deltaX > 0) {
+      // right swipe,
+      this.game.direction = 'right';
+      currentLeft = currentLeft + (distanceToMove * blockSize);
+    } else {
+      // left swipe
+      this.game.direction = 'left';
+      currentLeft = currentLeft - (distanceToMove * blockSize);
+    }
+
+    // set move repeats based on distance
+    // value will be zero if user didn't swipe very far
+    this.game.moveRepeat = blocksDistance;
+    // update the left value
+    this.ui.cursorLeft = currentLeft + 'px';
   }
 
 
@@ -151,30 +178,22 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param ev Gesture event
    */
   onGestureEnd(ev: GestureDetail): void {
-    // do gesture only if is a movable block
-    if (this.gameBlock.type !== 'X' && this.gameBlock.type !== 'Y') {
 
-      // get distance, make it positive number.
-      // note: velocity is negative when swiped to the left...
-      const distance = Math.abs(ev.deltaX);
-      const blockSize = parseInt(this.ui.blockSize.replace('px', ''), 10);
-      if (distance > (blockSize + 50)) {
-        console.log('big swipe');
-      } else {
-        console.log('small swipe');
-      }
-
-      // swipe right or left based on deltaX
-      if (ev.deltaX > 0) {
-        this.move('right');
-      } else {
-        this.move('left');
-      }
+    // do nothing if gesture isn't for current moving block
+    if (this.ui.blockFor !== this.gameBlock.blockId) {
+      return;
     }
+    // if block is not movable, do nothing
+    // this check should not be needed, but we do it anyway just to make sure
+    if (this.gameBlock.movable === false) {
+      return;
+    }
+
+    // set the current block to be moved, and call the try move method
+    this.game.currentBlock = this.gameBlock;
+    this.game.tryMove();
     // fade out cursor
     this.ui.cursorOpacity = 0;
-    this.selected = 'not-selected';
-
   }
 
 
@@ -206,16 +225,12 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
     this.top = heightOffset + (this.gameBlock.line * size) + 'px';
     this.left = widthOffset + (this.gameBlock.position * size) + 'px';
 
-  }
+    // set the border position, minus pixels for border
+    this.ui.borderTop = (heightOffset-5) + 'px';
+    this.ui.borderLeft = (widthOffset-5) + 'px';
+    this.ui.borderHeight = ((this.game.totalLines * size)+10) + 'px';
+    this.ui.borderWidth = ((this.game.blocksPerLine * size)+10)+ 'px';
 
-  /**
-   * try to move a block left or right.
-   *
-   * @param direction left or right
-   */
-  move(direction: string) {
-    // call trymove from game service, returns true or false.
-    this.game.tryMove(this.gameBlock, direction);
   }
 
 
@@ -233,6 +248,8 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
     if(this.opacity === 0) {
       setTimeout(()=>{
         this.gameBlock.type = 'Y';
+        this.gameBlock.movable = false;
+        this.gameBlock.name = '';
       }, 500);
     }
   }

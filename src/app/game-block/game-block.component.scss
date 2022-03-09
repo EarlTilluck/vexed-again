@@ -11,66 +11,77 @@
 
   verify by loading the following level
   level data for impossible - 6 (index of 5)
-  gcXgXXXX/XgXeXXXX/Xfhf.X.c/hXagfhed/d.Xbegdh/bdfefdaX
+  gcXgXXXX/XgXeXXXX/XfhfYXYc/hXagfhed/dYXbegdh/bdfefdaX
 
 */
 
 .block {
   position: absolute;
-  transition: top 0.25s linear, left 0.5s ease-in, opacity 0.5s ease-in;
+  transition: top 0.25s linear, left 0.25s linear, opacity 0.5s ease-in;
   user-select: none; // disable selecting text (solves issue with gestures in web version)
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
 }
 
-.selected {
+.movable:active {
   border: 1px solid aqua;
 }
 
 .X {
   background-color: slategrey;
+  border-radius: 0;
 }
 
 .Y {
   display: none;
-  background-color: yellow;
+  border-radius: none;
 }
 
 .a {
-  background-color: red;
-  cursor: move;
+  color: pink;
+  background-image: radial-gradient(circle, salmon, red);
+  cursor: grab;
 }
 
 .b {
   background-color: greenyellow;
-  cursor: move;
-
+  cursor: grab;
 }
 
 .c {
+
   background-color: brown;
-  cursor: move;
+  cursor: grab;
 }
 
 .d {
+
   background-color: salmon;
-  cursor: move;
+  cursor: grab;
 }
 
 .e {
+
   background-color: skyblue;
-  cursor: move;
+  cursor: grab;
 }
 
 .f {
+
   background-color: olive;
-  cursor: move;
+  cursor: grab;
 }
 
 .g {
+
   background-color: plum;
-  cursor: move;
+  cursor: grab;
 }
 
 .h {
+
   background-color: violet;
-  cursor: move;
+  cursor: grab;
 }

@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Block } from '../models/block.model';
+import { UiService } from './ui.service';
 import { VexedService } from './vexed.service';
 
 
@@ -28,8 +29,14 @@ export class GameService {
   currentPar = 0;
   currentMoveTotal = 0;
 
+  // move data
+  currentBlock: Block = null;
+  moveRepeat = 0;
+  direction = 'left';
+
   constructor(
-    private vexed: VexedService
+    private vexed: VexedService,
+    private ui: UiService
   ){};
 
 
@@ -56,10 +63,18 @@ export class GameService {
     // clear previous board state
     this.blocks = [];
 
+    // get the history for the current level
+    this.history = this.vexed.getHistory();
+
     // e.g. of board string:
     // XXXXXXXX/XYYYYYaX/XYXXXXXX/XYYYYYYX/XXXXXXYX/XaYYYYYX/XXXXXXXX
     // X = wall, Y = empty space, a-h = block
-    const board = this.vexed.currentLevel.board;
+    //const board = this.vexed.currentLevel.board;
+
+    // to force game to load a level with all blocks available use the
+    // following line two lines and comment out the line above.
+    this.history = [];
+    const board = 'gcXgXXXX/XgXeXXXX/XfhfYXYc/hXagfhed/dYXbegdh/bdfefdaX';
 
     // split string into each line,
     const lines = board.split('/');
@@ -68,8 +83,6 @@ export class GameService {
     this.totalLines = lines.length;
 
 
-    // get the history for the current level
-    this.history = this.vexed.getHistory();
     // if history is not empty,
     if (this.history !== null && this.history.length > 0) {
       // then set the current state as the first block array in history
@@ -102,25 +115,32 @@ export class GameService {
 
   /**
    * Try to move a block either left or right.
+   * This function is called multiple times
    *
    * @param gameBlock
    * @param direction
    * @returns
    */
-  tryMove(gameBlock: Block, direction: string): boolean {
+  tryMove(): boolean {
+
+    // cancel if we should stop moving
+    if(this.moveRepeat <= 0) {
+      this.ui.blockFor = ''; // stop blocking gesture
+      return false;
+    }
 
     // a block can only move left or right if it has an empty space next to it.
 
     // find the position of the block next to the current block
     let adjacentBlockPosition = 0;
-    if (direction === 'left') {
-      adjacentBlockPosition = gameBlock.position - 1;
+    if (this.direction === 'left') {
+      adjacentBlockPosition = this.currentBlock.position - 1;
     } else {
-      adjacentBlockPosition = gameBlock.position + 1;
+      adjacentBlockPosition = this.currentBlock.position + 1;
     }
 
     // find the block on the same line, in that position.
-    const adjacentBlock = this.getBlock(gameBlock.line, adjacentBlockPosition);
+    const adjacentBlock = this.getBlock(this.currentBlock.line, adjacentBlockPosition);
 
     // test if can move into adjacent square
     // block must exist
@@ -130,19 +150,22 @@ export class GameService {
         // block must be empty space
         if (adjacentBlock.type === 'Y') {
           // the current block can be swapped with the adjacent block.
-          this.swapBlock(gameBlock, adjacentBlock);
+          this.swapBlock(this.currentBlock, adjacentBlock);
           // add move
           this.currentMoveTotal++;
-          // wait a second for css animation to finish, then...
+          // wait for css animation to finish, then...
           setTimeout(() => {
             // find blocks that should fall and have them fall
             this.fallBlocks();
-          }, 500);
+          }, 250);
           return true;
         }
       }
     }
     // if above doesn't excecute, we coudn't move block into new position.
+    // stop further moves as well
+    this.moveRepeat = 0;
+    this.ui.blockFor = ''; // stop blocking gesture
     return false;
   }
 
@@ -159,8 +182,12 @@ export class GameService {
     const belowBlock = this.getBlock(lineBelow, gameBlock.position);
     if (belowBlock !== null) {
       // only do fall for a block that is not empty space or wall.
-      if (gameBlock.type !== 'Y' && gameBlock.type !== 'X' && belowBlock.type === 'Y') {
+      if (gameBlock.movable === true && belowBlock.type === 'Y') {
         this.swapBlock(gameBlock, belowBlock);
+        // if this block is the currently selected block, prevent further moves
+        if (gameBlock.blockId === this.currentBlock.blockId) {
+          this.moveRepeat = 0;
+        }
         return true;
       }
     }
@@ -208,28 +235,28 @@ export class GameService {
       const rightBlock = this.getBlock(block.line, block.position + 1);
       // set opacity if they are the same
       if (aboveBlock !== null) {
-        if (aboveBlock.type === block.type && aboveBlock.type !== 'X' && aboveBlock.type !== 'Y') {
+        if (aboveBlock.type === block.type && aboveBlock.movable === true) {
           block.opacity = 0;
           aboveBlock.opacity = 0;
           didVanish = true;
         }
       }
       if (belowBlock !== null) {
-        if (belowBlock.type === block.type && belowBlock.type !== 'X' && belowBlock.type !== 'Y') {
+        if (belowBlock.type === block.type && belowBlock.movable === true) {
           block.opacity = 0;
           belowBlock.opacity = 0;
           didVanish = true;
         }
       }
       if (leftBlock !== null) {
-        if (leftBlock.type === block.type && leftBlock.type !== 'X' && leftBlock.type !== 'Y') {
+        if (leftBlock.type === block.type && leftBlock.movable === true) {
           block.opacity = 0;
           leftBlock.opacity = 0;
           didVanish = true;
         }
       }
       if (rightBlock !== null) {
-        if (rightBlock.type === block.type && rightBlock.type !== 'X' && rightBlock.type !== 'Y') {
+        if (rightBlock.type === block.type && rightBlock.movable === true) {
           block.opacity = 0;
           rightBlock.opacity = 0;
           didVanish = true;
@@ -250,11 +277,15 @@ export class GameService {
         } else {
           this.fallBlocks();
         }
-      }, 500);
+      }, 250);
     } else {
-      // No more blocks can fall, and no blocks can vanish anymore...
+      // this is the end of a move,
+      // no more blocks can fall, and no blocks can vanish anymore...
       // update the history of the board.
       this.pushHistory();
+      // trymove again if needed
+      this.moveRepeat--;
+      this.tryMove();
     }
   }
 
@@ -283,7 +314,7 @@ export class GameService {
   checkWin(): boolean {
     let win = true;
     for (const block of this.blocks) {
-      if (block.type !== 'X' && block.type !== 'Y') {
+      if (block.movable === true) {
         win = false;
         break;
       }
@@ -309,6 +340,8 @@ export class GameService {
       // we are at the end of this board.
       console.log('gamepack won');
     }
+    // stop blocking gesture
+    this.ui.blockFor = '';
   }
 
 
@@ -343,6 +376,7 @@ export class GameService {
       this.blocks = this.cloneBlocks(this.history[0]); // set blocks to state before
       this.vexed.saveHistory(this.history);
       this.currentMoveTotal--; // decrement move total
+      this.ui.blockFor = ''; // if in middle of move, clear gesture block
     }
   }
 
@@ -361,6 +395,8 @@ export class GameService {
     this.vexed.saveHistory(this.history);
     // reset move total
     this.currentMoveTotal = 0;
+    this.ui.blockFor = ''; // if in middle of move, clear gesture block
+
   }
 
 
@@ -388,6 +424,7 @@ export class GameService {
     }
     return newArray;
   }
+
 
 }// end class
 

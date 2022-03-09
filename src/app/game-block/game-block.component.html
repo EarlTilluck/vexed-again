@@ -1,9 +1,20 @@
-<div #block [ngClass]="['block', this.gameBlock.type, this.selected]" [ngStyle]=" {
-  height: this.ui.blockSize,
-  width: this.ui.blockSize,
-  left: this.left,
-  top: this.top,
-  opacity: this.opacity
-}"
-(click)="onClick()">
+<div #block
+  [ngClass]="['block', this.gameBlock.type, this.gameBlock.movable ? 'movable' : 'not-movable']"
+  [ngStyle]="{
+    height: this.ui.blockSize,
+    width: this.ui.blockSize,
+    left: this.left,
+    top: this.top,
+    opacity: this.opacity
+  }"
+>
+  <ion-icon
+    *ngIf="this.gameBlock.movable"
+    [ngStyle]="{
+      height: this.ui.iconSize,
+      width: this.ui.iconSize
+    }"
+    [name]="this.gameBlock.name"
+  >
+  </ion-icon>
 </div>

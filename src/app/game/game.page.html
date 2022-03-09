@@ -2,7 +2,6 @@
   <ion-card [ngStyle]="{height: this.ui.cardHeight, width: this.ui.cardWidth }">
     <ion-card-header>
       <ion-card-title>{{this.vexed.currentLevel.name}}</ion-card-title>
-      <ion-card-subtitle>{{this.ui.cursorLeft}}, {{this.ui.cursorTop}}</ion-card-subtitle>
       <ion-card-subtitle>Moves: {{this.game.currentMoveTotal}}, Par: {{this.game.currentPar}}, Best: {{this.game.currentBest}}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
@@ -16,6 +15,7 @@
         >
         </app-game-block>
         <app-cursor></app-cursor>
+        <app-border></app-border>
       </div>
   </ion-card-content>
 </ion-card>
