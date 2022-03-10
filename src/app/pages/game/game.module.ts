@@ -5,9 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { GamePage } from './game.page';
 
 import { GamePageRoutingModule } from './game-routing.module';
-import { GameBlockComponent } from '../game-block/game-block.component';
-import { CursorComponent } from '../cursor/cursor.component';
-import { BorderComponent } from '../border/border.component';
+import { GameBlockComponent } from '../../components/game-block/game-block.component';
+import { CursorComponent } from '../../components/cursor/cursor.component';
+import { BorderComponent } from '../../components/border/border.component';
 
 @NgModule({
   imports: [

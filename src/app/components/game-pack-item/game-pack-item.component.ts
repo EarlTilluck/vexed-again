@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Level } from '../models/level.model';
-import { LevelPack } from '../models/LevelPack.model';
-import { UiService } from '../services/ui.service';
-import { VexedService } from '../services/vexed.service';
+import { Level } from '../../models/level.model';
+import { LevelPack } from '../../models/LevelPack.model';
+import { UiService } from '../../services/ui.service';
+import { VexedService } from '../../services/vexed.service';
 
 @Component({
   selector: 'app-game-pack-item',

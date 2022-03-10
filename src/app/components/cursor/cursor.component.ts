@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { GameService } from '../services/game.service';
-import { UiService } from '../services/ui.service';
+import { GameService } from '../../services/game.service';
+import { UiService } from '../../services/ui.service';
 
 @Component({
   selector: 'app-cursor',

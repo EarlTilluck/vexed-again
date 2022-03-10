@@ -1,8 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ViewDidEnter } from '@ionic/angular';
-import { VexedService } from '../services/vexed.service';
-import { GameService } from '../services/game.service';
-import { UiService } from '../services/ui.service';
+import { VexedService } from '../../services/vexed.service';
+import { GameService } from '../../services/game.service';
+import { UiService } from '../../services/ui.service';
 
 @Component({
   selector: 'app-game',

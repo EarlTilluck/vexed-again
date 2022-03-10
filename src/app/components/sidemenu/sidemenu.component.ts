@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { AlertController, MenuController } from '@ionic/angular';
-import { DataService } from '../services/data.service';
-import { UiService } from '../services/ui.service';
+import { DataService } from '../../services/data.service';
+import { UiService } from '../../services/ui.service';
 
 
 @Component({

@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Gesture, GestureController, GestureDetail } from '@ionic/angular';
-import { Block } from '../models/block.model';
-import { GameService } from '../services/game.service';
-import { UiService } from '../services/ui.service';
+import { Block } from '../../models/block.model';
+import { GameService } from '../../services/game.service';
+import { UiService } from '../../services/ui.service';
 
 @Component({
   selector: 'app-game-block',

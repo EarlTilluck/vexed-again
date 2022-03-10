@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { UiService } from '../services/ui.service';
-import { VexedService } from '../services/vexed.service';
+import { UiService } from '../../services/ui.service';
+import { VexedService } from '../../services/vexed.service';
 
 @Component({
   selector: 'app-game-select-modal',

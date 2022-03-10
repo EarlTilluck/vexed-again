@@ -3,8 +3,8 @@ import { DataService } from '../services/data.service';
 
 
 // import levels
-import BoardInfo from '../models/board-info';
-import LevelsInfo from '../models/level-info';
+import BoardInfo from '../models/board.info';
+import LevelsInfo from '../models/level.info';
 import { LevelPack } from '../models/LevelPack.model';
 import { Level } from '../models/level.model';
 import { Block } from '../models/block.model';

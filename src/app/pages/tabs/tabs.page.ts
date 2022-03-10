@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MenuController } from '@ionic/angular';
-import { GameService } from '../services/game.service';
+import { GameService } from '../../services/game.service';
 
 @Component({
   selector: 'app-tabs',

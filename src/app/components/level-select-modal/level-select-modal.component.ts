@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Level } from '../models/level.model';
-import { UiService } from '../services/ui.service';
-import { VexedService } from '../services/vexed.service';
+import { Level } from '../../models/level.model';
+import { UiService } from '../../services/ui.service';
+import { VexedService } from '../../services/vexed.service';
 
 @Component({
   selector: 'app-level-select-modal',
