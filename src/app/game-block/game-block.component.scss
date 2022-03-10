@@ -22,66 +22,67 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 15px;
+  border-radius: 3px;
+  color: #FFF;
+  cursor: grab;
 }
 
-.movable:active {
-  border: 1px solid aqua;
+.light:active {
+  border: 1px solid #616161;
+}
+
+.dark:active {
+  border: 1px solid #FFF;
 }
 
 .X {
-  background-color: slategrey;
+  background-color: #5D6D7E;
   border-radius: 0;
+  cursor: default;
 }
 
 .Y {
   display: none;
-  border-radius: none;
+  border-radius: 0;
+  cursor: default;
 }
 
 .a {
-  color: pink;
-  background-image: radial-gradient(circle, salmon, red);
-  cursor: grab;
+  // heart
+  background-image: radial-gradient(circle, #BA68C8, #FF00FF);
 }
 
 .b {
-  background-color: greenyellow;
-  cursor: grab;
+  // umbrella
+  background-image: radial-gradient(circle, #26C6DA, #03A9F4);
 }
 
 .c {
-
-  background-color: brown;
-  cursor: grab;
+  // dice
+  background-image: radial-gradient(circle, #FF8A65, #E65100);
 }
 
 .d {
-
-  background-color: salmon;
-  cursor: grab;
+  // diamond
+  background-image: radial-gradient(circle, #9575CD, #512DA8);
 }
 
 .e {
-
-  background-color: skyblue;
-  cursor: grab;
+  // leaf
+  background-image: radial-gradient(circle, #4DB6AC, #33FF33);
 }
 
 .f {
-
-  background-color: olive;
-  cursor: grab;
+  // apple
+  background-image: radial-gradient(circle, #EC407A, #CC0000);
 }
 
 .g {
-
-  background-color: plum;
-  cursor: grab;
+  // bowling ball
+  background-image: radial-gradient(circle, #7986CB, #283593);
 }
 
 .h {
-
-  background-color: violet;
-  cursor: grab;
+  // balloon
+  background-image: radial-gradient(circle, #00CC99, #009900);
 }

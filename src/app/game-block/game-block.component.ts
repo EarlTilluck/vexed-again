@@ -226,10 +226,10 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
     this.left = widthOffset + (this.gameBlock.position * size) + 'px';
 
     // set the border position, minus pixels for border
-    this.ui.borderTop = (heightOffset-5) + 'px';
-    this.ui.borderLeft = (widthOffset-5) + 'px';
-    this.ui.borderHeight = ((this.game.totalLines * size)+10) + 'px';
-    this.ui.borderWidth = ((this.game.blocksPerLine * size)+10)+ 'px';
+    this.ui.borderTop = (heightOffset-10) + 'px';
+    this.ui.borderLeft = (widthOffset-10) + 'px';
+    this.ui.borderHeight = ((this.game.totalLines * size)+20) + 'px';
+    this.ui.borderWidth = ((this.game.blocksPerLine * size)+20)+ 'px';
 
   }
 
@@ -246,9 +246,11 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
     // then set the block to be empty space.
     this.opacity = this.gameBlock.opacity;
     if(this.opacity === 0) {
+      // wait for animation to finish before setting type
+      // thw type is set to Y, css is set to display: none
       setTimeout(()=>{
-        this.gameBlock.type = 'Y';
         this.gameBlock.movable = false;
+        this.gameBlock.type = 'Y';
         this.gameBlock.name = '';
       }, 500);
     }

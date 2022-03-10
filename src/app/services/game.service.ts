@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Block } from '../models/block.model';
+import { SoundService } from './sound.service';
 import { UiService } from './ui.service';
 import { VexedService } from './vexed.service';
 
@@ -36,7 +37,8 @@ export class GameService {
 
   constructor(
     private vexed: VexedService,
-    private ui: UiService
+    private ui: UiService,
+    private sound: SoundService
   ){};
 
 
@@ -147,8 +149,9 @@ export class GameService {
     if (adjacentBlock !== null) {
       // block must be within board left and right edges
       if (adjacentBlock.position >= 0 && adjacentBlock.position < this.blocksPerLine) {
-        // block must be empty space
-        if (adjacentBlock.type === 'Y') {
+        // this block must not have vanished previously and
+        // other block must be empty space
+        if (this.currentBlock.movable && adjacentBlock.type === 'Y') {
           // the current block can be swapped with the adjacent block.
           this.swapBlock(this.currentBlock, adjacentBlock);
           // add move
@@ -269,6 +272,8 @@ export class GameService {
     // if a vanish occurred, check if we won,
     // if not, check if other blocks should fall
     if(didVanish) {
+      // play vanish sound
+      this.sound.playSound('vanish');
       // wait for vanishing animation to finish.
       setTimeout(() => {
         // check if win first
@@ -277,7 +282,7 @@ export class GameService {
         } else {
           this.fallBlocks();
         }
-      }, 250);
+      }, 500);
     } else {
       // this is the end of a move,
       // no more blocks can fall, and no blocks can vanish anymore...
@@ -296,14 +301,19 @@ export class GameService {
    * @param blockB
    */
   swapBlock(blockA: Block, blockB: Block) {
+    //console.log('swapping blocks: ' + blockA.type + blockB.type);
+    // swap data in blocks
     const tempLine = blockA.line;
     const tempPosition = blockA.position;
     blockA.line = blockB.line;
     blockA.position = blockB.position;
     blockB.line = tempLine;
     blockB.position = tempPosition;
+    // emit event for both blocks to update
     this.moveEvent.emit(blockA);
     this.moveEvent.emit(blockB);
+    // play swish sound
+    this.sound.playSound('swish');
   }
 
   /**

@@ -131,6 +131,19 @@ export class DataService {
   }
 
   /**
+   * set the dark mode
+   *
+   * @param darkMode string 'true' or 'false'
+   */
+  setDarkMode(darkMode: string): void {
+    try {
+      localStorage.setItem('dark-mode', darkMode);
+    } catch (e) {
+      console.log(this.localStorageError);
+    }
+  }
+
+  /**
    * Get value of dark mode.
    * Returns true if no value was set before, making
    * the app dark mode by default.

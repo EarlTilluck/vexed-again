@@ -1,7 +1,22 @@
 .cursor {
   position: absolute;
-  border: 1px solid aqua;
   z-index: 99;
   pointer-events: none;
   transition: opacity 0.1s ease-in-out;
+}
+
+.light {
+  border: 1px solid #616161;
+}
+
+.dark {
+  border: 1px solid #FFF;
+}
+
+.no-left-border {
+  border-left: none;
+}
+
+.no-right-border {
+  border-right: none;
 }

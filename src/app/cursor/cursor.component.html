@@ -1,4 +1,10 @@
-<div #cursor class="cursor" [ngStyle]=" {
+<div #cursor class="cursor"
+[ngClass]="[
+  this.ui.darkMode === 'true' ? 'dark' : 'light',
+  this.game.moveRepeat === 1 && this.game.direction === 'left' ? 'no-right-border' : 'all-borders',
+  this.game.moveRepeat === 1 && this.game.direction === 'right' ? 'no-left-border' : 'all-borders'
+]"
+[ngStyle]=" {
   height: this.ui.blockSize,
   width: this.ui.blockSize,
   left: this.ui.cursorLeft,

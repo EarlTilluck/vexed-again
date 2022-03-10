@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GameService } from '../services/game.service';
 import { UiService } from '../services/ui.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { UiService } from '../services/ui.service';
 export class CursorComponent implements OnInit {
 
 
-  constructor(public ui: UiService) { }
+  constructor(public ui: UiService, public game: GameService) { }
 
   ngOnInit() { }
 

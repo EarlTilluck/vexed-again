@@ -26,31 +26,31 @@ export class Block {
         break;
       case 'b':
         this.movable = true;
-        this.name = 'heart';
+        this.name = 'umbrella';
         break;
       case 'c':
         this.movable = true;
-        this.name = 'heart';
+        this.name = 'dice';
         break;
       case 'd':
         this.movable = true;
-        this.name = 'heart';
+        this.name = 'diamond';
         break;
       case 'e':
         this.movable = true;
-        this.name = 'heart';
+        this.name = 'leaf';
         break;
       case 'f':
         this.movable = true;
-        this.name = 'heart';
+        this.name = 'nutrition';
         break;
       case 'g':
         this.movable = true;
-        this.name = 'heart';
+        this.name = 'bowling-ball';
         break;
       case 'h':
         this.movable = true;
-        this.name = 'heart';
+        this.name = 'balloon';
         break;
       case 'X':
         this.movable = false;

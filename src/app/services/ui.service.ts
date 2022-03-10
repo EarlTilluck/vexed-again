@@ -1,5 +1,4 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { GameService } from './game.service';
 
 @Injectable({
   providedIn: 'root',
@@ -36,6 +35,9 @@ export class UiService {
 
   // gesture blocking to prevent multiple moves
   blockFor = '';
+
+  // darkmode ?
+  darkMode = 'true';
 
   // events
   selectLevels = new EventEmitter();

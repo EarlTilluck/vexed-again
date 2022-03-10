@@ -1,5 +1,5 @@
 <div #block
-  [ngClass]="['block', this.gameBlock.type, this.gameBlock.movable ? 'movable' : 'not-movable']"
+  [ngClass]="['block', this.gameBlock.type, this.ui.darkMode === 'true' ? 'dark' : 'light']"
   [ngStyle]="{
     height: this.ui.blockSize,
     width: this.ui.blockSize,

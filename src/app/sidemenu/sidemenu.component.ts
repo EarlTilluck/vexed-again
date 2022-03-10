@@ -11,9 +11,6 @@ import { UiService } from '../services/ui.service';
 })
 export class SidemenuComponent implements OnInit {
 
-  // dark mode enabled?
-  darkMode = true;
-
   // play sounds
   isSoundOn = true;
 
@@ -72,13 +69,8 @@ export class SidemenuComponent implements OnInit {
    * accordingly
    */
   setDarkMode() {
-    const darkMode = this.data.getDarkMode();
-    try {
-      this.darkMode = JSON.parse(darkMode);
-    } catch (e) {
-      this.darkMode = true; // dark mode by default
-    }
-    if (this.darkMode === true) {
+    this.ui.darkMode = this.data.getDarkMode();
+    if (this.ui.darkMode === 'true') {
       this.renderer.setAttribute(document.body, 'color-theme', 'dark');
     } else {
       this.renderer.setAttribute(document.body, 'color-theme', 'light');
@@ -122,8 +114,13 @@ export class SidemenuComponent implements OnInit {
           text: 'Okay',
           id: 'confirm-button',
           handler: () => {
-            // clear data, the emit event to reset game board
+            // keep darkmode
+            const darkMode = this.data.getDarkMode();
+            // clear data,
             this.data.clearAll();
+            // set dark mode back to what it was
+            this.data.setDarkMode(darkMode);
+            //the emit event to reset game board
             this.ui.didClearSaveData.emit(); // subscribed by game.page.ts
           }
         }
