@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MenuController } from '@ionic/angular';
+import { UiService } from 'src/app/services/ui.service';
 import { GameService } from '../../services/game.service';
 
 @Component({
@@ -12,7 +13,8 @@ export class TabsPage {
 
   constructor(
     private menu: MenuController,
-    private game: GameService
+    private game: GameService,
+    private ui: UiService
   ) {}
 
 
@@ -20,7 +22,9 @@ export class TabsPage {
    * click event to toggle the menu
    */
   onMenuToggle(): void {
-    this.menu.toggle('side-menu');
+    if(this.ui.blockFor === '') {
+      this.menu.toggle('side-menu');
+    }
   }
 
   /**

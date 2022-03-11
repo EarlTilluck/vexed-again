@@ -309,7 +309,6 @@ export class GameService {
    * @param blockB
    */
   swapBlock(blockA: Block, blockB: Block) {
-    //console.log('swapping blocks: ' + blockA.type + blockB.type);
     // swap data in blocks
     const tempLine = blockA.line;
     const tempPosition = blockA.position;
