@@ -8,7 +8,11 @@
       <div
         id="game-board"
         [ngClass]="[this.ui.darkMode === 'true' ? 'dark' : 'light']"
-        [ngStyle]="{height: this.ui.boardHeight, width: this.ui.boardWidth, marginTop: this.ui.heightOffset}"
+        [ngStyle]="{
+          height: this.ui.boardHeight,
+          width: this.ui.boardWidth,
+          marginTop: this.ui.heightOffset
+        }"
       >
         <app-game-block
           *ngFor="let block of this.game.blocks; index as i"

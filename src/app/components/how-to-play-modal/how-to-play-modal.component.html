@@ -1,0 +1,56 @@
+<ion-modal #howToPlay trigger="trigger-how-to-play">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>How To Play</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="onDissmissModal()">
+            <ion-icon slot="icon-only" name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+
+      <ion-card class="ion-no-margin">
+        <ion-card-header>
+          <ion-card-title>Moving Blocks</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ul>
+            <li>Move blocks left or right by swiping them in that direction.</li>
+            <li>Blocks fall down due to gravity if there is an empty space below them.</li>
+            <li>Move similar blocks next to each other to make them disappear.</li>
+            <li>You win when all blocks disappear.</li>
+          </ul>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="ion-no-margin">
+        <ion-card-header>
+          <ion-card-title>Scoring</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p>Each level has a 'Par' score which denotes how may moves it
+          ideally takes to pass a level. Try to solve the level with a number
+          of moves equal to or under 'Par'.</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="ion-no-margin">
+          <ion-card-header>
+            <ion-card-title>Undo &amp; Reset</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p>Hit the undo button toundo a move. Hit the reset to start over Clear Game Data Use this to
+            delete all progress and set the app back to when it was first used.
+            Warning! this cannot be undone. You will lose all your progress.</p>
+            <ion-button color="light" class="ion-margin-vertical"(click)="onDissmissModal()">Back</ion-button>
+          </ion-card-content>
+      </ion-card>
+
+    </ion-content>
+
+  </ng-template>
+</ion-modal>

@@ -24,7 +24,7 @@
         <ion-label>Select level</ion-label>
       </ion-item>
 
-      <ion-item style="cursor: pointer">
+      <ion-item style="cursor: pointer" id="trigger-how-to-play" (click)="onCloseMenu()">
         <ion-icon slot="start" name="help-circle-outline"></ion-icon>
         <ion-label>How To Play</ion-label>
       </ion-item>
@@ -35,7 +35,7 @@
         <ion-toggle (ionChange)="onToggleDarkMode()"></ion-toggle>
       </ion-item>
 
-      <ion-item style="cursor: pointer" id="trigger-adjust-sound" (click)="onSound()">
+      <ion-item style="cursor: pointer" id="trigger-adjust-sound" (click)="onCloseMenu()">
         <ion-icon slot="start" [name]="this.sound.iconName"></ion-icon>
         <ion-label>Sound</ion-label>
       </ion-item>
@@ -45,7 +45,7 @@
         <ion-label>Clear Game Data.</ion-label>
       </ion-item>
 
-      <ion-item style="cursor: pointer">
+      <ion-item style="cursor: pointer" id="trigger-about" (click)="onCloseMenu()">
         <ion-icon slot="start" name="information-circle-outline"></ion-icon>
         <ion-label>About</ion-label>
       </ion-item>

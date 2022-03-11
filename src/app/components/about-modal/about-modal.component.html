@@ -1,0 +1,50 @@
+<ion-modal #about trigger="trigger-about">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>About</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="onDissmissModal()">
+            <ion-icon slot="icon-only" name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+
+      <ion-card class="ion-no-margin">
+        <ion-card-header>
+          <ion-card-title>Vexed Again</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p>This is a remake of the classic open source game for the Palm OS.</p>
+          <p>It has been made with the Ionic/Capacitor + Angular Stack.</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="ion-no-margin">
+        <ion-card-header>
+          <ion-card-title>Credits</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p>Original game design by The Vexed Team</p>
+          <ul>
+            <li><a target="_blank" href="http://vexed.sourceforge.net/">http://vexed.sourceforge.net/</a></li>
+          </ul>
+          <p>Free sound effects from Mixkit.co</p>
+          <ul>
+            <li><a target="_blank" href="https://mixkit.co/free-sound-effects/">https://mixkit.co/free-sound-effects/</a></li>
+          </ul>
+          <p>Game Packs level design by various authors.</p>
+          <ul>
+            <li>Credits for each Game Pack shown in menu.</li>
+          </ul>
+          <ion-button color="light" class="ion-margin-vertical"(click)="onDissmissModal()">Back</ion-button>
+        </ion-card-content>
+      </ion-card>
+
+    </ion-content>
+
+  </ng-template>
+</ion-modal>

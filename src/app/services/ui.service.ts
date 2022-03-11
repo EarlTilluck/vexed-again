@@ -84,7 +84,7 @@ export class UiService {
     // lenght used should be a multiple of 10
     // that way 10 blocks can comfortably fit onto screen.
     // we divide by 10, and drop the remainder to get blocksize.
-    const blockSize = Math.floor(lenght/10);
+    const blockSize = Math.floor(lenght / 10);
     this.blockSize = blockSize + 'px';
 
     // set gameboard width to 10x blocksize plus border
@@ -106,6 +106,8 @@ export class UiService {
     heightLeftOver = heightLeftOver - 80 - 56;
     // set the value for margin top of gameboard
     this.heightOffset = Math.floor(heightLeftOver / 2) + 'px';
+
   }
+
 
 }// end class

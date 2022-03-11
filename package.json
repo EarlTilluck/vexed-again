@@ -2,7 +2,7 @@
   "name": "vexed-again",
   "version": "1.0.0",
   "author": "Earl Tilluck",
-  "homepage": "https://todo.Changemetogithubhostedpage.com/",
+  "homepage": "https://github.com/EarlTilluck/vexed-again",
   "scripts": {
     "ng": "ng",
     "serve": "ionic serve",

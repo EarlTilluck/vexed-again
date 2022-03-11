@@ -4,7 +4,10 @@ Made with the Ionic + Angular + Capacitor stack
 
 
 ## Play 
-Play the Web version here: [Vexed Again](https://www.todoAddURL)
+Play the Web version here: [Vexed Again](https://www.todoAddURL)  
+
+## How to Play?
+Click/Tap menu button, then choose 'How To Play'
 
 ## Credits
 Original game design by The Vexed Team
@@ -40,15 +43,5 @@ Use angular-cli-ghpages to build and deploy to githup pages.
 
 
 ## todo
-
-* add help and how to play, about.
-
-* nicer transition for gameboard when load and resized (css);
-
-* thourogh test for jank and glitches.
-
-* change the homepage in description part of package.json.
-
 * add github pages url to top of readme under play section after deploying to github pages
-
 

@@ -81,13 +81,6 @@ export class SidemenuComponent implements OnInit {
 
 
   /**
-   * show sound modal for selecting volume
-   */
-  onSound() {
-    this.onCloseMenu();
-  }
-
-  /**
    * Present an alert,
    * If user confirms, delete everything from
    * local storagee.
