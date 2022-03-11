@@ -4,7 +4,7 @@ Made with the Ionic + Angular + Capacitor stack
 
 
 ## Play 
-Play the Web version here: [Vexed Again](https://www.todoAddURL)  
+Play the Web version here: [Vexed Again (hosted on Github Pages)](https://earltilluck.github.io/vexed-again/)  
 
 ## How to Play?
 Click/Tap menu button, then choose 'How To Play'
@@ -40,8 +40,3 @@ Not available until I get a Mac computer and Iphone.
 ### Deploy to Github Pages
 Commit and push all changes in Master first, then...  
 Use angular-cli-ghpages to build and deploy to githup pages.  
-
-
-## todo
-* add github pages url to top of readme under play section after deploying to github pages
-
