@@ -8,8 +8,9 @@ Play the Web version here: [Vexed Again](https://www.todoAddURL)
 
 ## Credits
 Original game design by The Vexed Team
-* http://vexed.sourceforge.net/
-Free sound effects from Mixkit.co
+* http://vexed.sourceforge.net/  
+
+Free sound effects from Mixkit.co  
 * https://mixkit.co/free-sound-effects/
 
 ## Links 
@@ -47,6 +48,7 @@ Use angular-cli-ghpages to build and deploy to githup pages.
 * thourogh test for jank and glitches.
 
 * change the homepage in description part of package.json.
-* add github pages url to top of readme under play section
+
+* add github pages url to top of readme under play section after deploying to github pages
 
 
