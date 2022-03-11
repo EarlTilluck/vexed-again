@@ -1,4 +1,5 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 import { Block } from '../models/block.model';
 import { SoundService } from './sound.service';
 import { UiService } from './ui.service';
@@ -38,7 +39,8 @@ export class GameService {
   constructor(
     private vexed: VexedService,
     private ui: UiService,
-    private sound: SoundService
+    private sound: SoundService,
+    private alertController: AlertController
   ){};
 
 
@@ -350,13 +352,17 @@ export class GameService {
     this.vexed.passLevel();
     // set best for this level
     this.vexed.setBest(this.currentMoveTotal);
-    // play winning sound
-    this.sound.playSound('passLevel');
     // load next level,
     // returns false if we are at the end of the game pack
     if(this.vexed.loadNextLevel() === false ) {
       // we are at the end of this board.
       // wait a few seconds then play winning sound
+      // and show alert
+      this.sound.playSound('winGamePack');
+      this.presentWinAlert();
+    } else {
+      // play winning sound for passing a single level
+      this.sound.playSound('passLevel');
     }
     // stop blocking gesture
     this.ui.blockFor = '';
@@ -443,6 +449,32 @@ export class GameService {
     return newArray;
   }
 
+
+  /**
+   * show the winning alert on screen
+   */
+  async presentWinAlert() {
+
+    const alert = await this.alertController.create({
+      header: 'Congratulations',
+      subHeader: this.vexed.currentPack.name + ' has been completed.',
+      message:  'Select a new game from the menu',
+      buttons: [
+        {
+          text: 'Okay',
+          role: 'cancel',
+          id: 'cancel-button',
+          handler: () => {
+            // reload the current level
+            this.vexed.loadLevel(this.vexed.currentLevelId);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+
+  }
 
 }// end class
 

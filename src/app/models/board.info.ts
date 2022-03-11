@@ -1455,7 +1455,7 @@ export default {
 			"par": "18"
 		},
 		"Lesson 4": {
-			"board": "XXXXXXX/YYYcdeb/YYYbcde/YYYXXXX/aYYYYYY/XYYYYXa/XXXXXX",
+			"board": "XXXXXXX/YYYcdeb/YYYbcde/YYYXXXX/aYYYYYY/XYYYYXa/XXXXXXX",
 			"par": "25"
 		}
 	},

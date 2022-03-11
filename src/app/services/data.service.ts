@@ -242,7 +242,7 @@ export class DataService {
    */
   getSound(): number {
     const volume = parseFloat(localStorage.getItem('sound-volume'));
-    if (isNaN(volume)) { console.log('nyaaaaaannn...');
+    if (isNaN(volume)) {
       return 1;
     }
     return volume;

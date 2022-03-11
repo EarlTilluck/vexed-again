@@ -60,7 +60,9 @@ export class SoundService {
     // block further sound play, then...
     this.blockSound = true;
     // play audio, then unblock sound play
-    audio.play().then(()=>{
+    audio.play().catch((err) => {
+      console.log(err);
+    }).then(()=>{
       this.blockSound = false;
     });
 

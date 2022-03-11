@@ -40,11 +40,6 @@ Use angular-cli-ghpages to build and deploy to githup pages.
 
 ## todo
 
-* implement clear board and clear gamepack sound
-
-* You win shown on screen when last level reached. 
-  message dissapears when choose to undo or reset.
-
 * add help and how to play, about.
 
 * nicer transition for gameboard when load and resized (css);
