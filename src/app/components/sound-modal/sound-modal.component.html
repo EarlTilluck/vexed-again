@@ -1,3 +1,39 @@
-<p>
-  sound-modal works!
-</p>
+<ion-modal #adjustSound trigger="trigger-adjust-sound" (click)="onDissmissModal()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Adjust Sound</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="onDissmissModal()">
+            <ion-icon slot="icon-only" name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-grid class="ion-padding">
+        <ion-row class="ion-padding-top ion-margin-top">
+          <ion-col size-sm="6" offset-sm="3">
+            <ion-list >
+              <ion-item>
+                <ion-range
+                  min="0"
+                  max="100"
+                  step="10"
+                  snaps="true"
+                  debounce="100"
+                  ticks="false"
+                  (ionChange)="onSoundChange()"
+                  [(ngModel)]="this.sound.rangeValue"
+                >
+                  <ion-icon slot="start" [name]="this.sound.iconName"></ion-icon>
+                </ion-range>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-content>
+  </ng-template>
+</ion-modal>

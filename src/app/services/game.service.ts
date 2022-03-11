@@ -73,10 +73,15 @@ export class GameService {
     // X = wall, Y = empty space, a-h = block
     //const board = this.vexed.currentLevel.board;
 
-    // to force game to load a level with all blocks available use the
-    // following line two lines and comment out the line above.
+    /*
+      DEBUG:
+      To force game to load a level with all blocks available use the
+      following line two lines and comment out the line above.
+    */
     this.history = [];
-    const board = 'gcXgXXXX/XgXeXXXX/XfhfYXYc/hXagfhed/dYXbegdh/bdfefdaX';
+    //const board = 'gcXgXXXX/XgXeXXXX/XfhfYXYc/hXagfhed/dYXbegdh/bdfefdaX'; // all types of blocks
+    //const board = 'YYYabYYY/aYYXXYYY/XXaXYbYb/XXXXXXXX/fYfYefec/XXXYXXXX/XXcYcXXX/XXXcXXXX'; // 8 blocks high
+    const board = 'bYXXXXaYaX/XYXbYYcYdX/XYXXYYeYeX/XbYedYcYcg/XXXXeYXYge/XXXXcYXYXX'; // 10 blocks wide
 
     // split string into each line,
     const lines = board.split('/');
@@ -344,11 +349,13 @@ export class GameService {
     this.vexed.passLevel();
     // set best for this level
     this.vexed.setBest(this.currentMoveTotal);
+    // play winning sound
+    this.sound.playSound('passLevel');
     // load next level,
     // returns false if we are at the end of the game pack
     if(this.vexed.loadNextLevel() === false ) {
       // we are at the end of this board.
-      console.log('gamepack won');
+      // wait a few seconds then play winning sound
     }
     // stop blocking gesture
     this.ui.blockFor = '';

@@ -224,6 +224,31 @@ export class DataService {
 
 
   /**
+   * save sound volume
+   *
+   * @param volume
+   */
+  saveSound(volume: number): void {
+    try {
+      localStorage.setItem('sound-volume', volume + '');
+    } catch (e) {
+      console.log(this.localStorageError);
+    }
+  }
+
+
+  /**
+   * get the volume setting
+   */
+  getSound(): number {
+    const volume = parseFloat(localStorage.getItem('sound-volume'));
+    if (isNaN(volume)) { console.log('nyaaaaaannn...');
+      return 1;
+    }
+    return volume;
+  }
+
+  /**
    * Delete all data from localstorage
    */
   clearAll() {

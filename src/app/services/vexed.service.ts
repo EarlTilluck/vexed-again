@@ -60,7 +60,7 @@ export class VexedService {
         count++;
         levels.push(
           new Level(count, name, boardData[name].board, boardData[name].par )
-      );
+        );
       }
       // create the LevelPack and add it to array
       this.vexedLevels.push(

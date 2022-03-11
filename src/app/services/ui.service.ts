@@ -71,7 +71,7 @@ export class UiService {
 
     // based on isPortrait, get total lenght of shorter dimension of screen
     let totalLenght = isPortrait ? innerWidth : innerHeight;
-    totalLenght = totalLenght - 32; // substract the value of ion card padding
+    totalLenght = totalLenght - 32 - 20; // substract the value of ion card padding
 
     // vexed levels can be 10 blocks wide at most
     // board lenght should be a multiple of 10

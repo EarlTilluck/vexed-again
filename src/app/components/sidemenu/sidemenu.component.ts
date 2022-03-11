@@ -1,5 +1,6 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { AlertController, MenuController } from '@ionic/angular';
+import { SoundService } from 'src/app/services/sound.service';
 import { DataService } from '../../services/data.service';
 import { UiService } from '../../services/ui.service';
 
@@ -19,6 +20,7 @@ export class SidemenuComponent implements OnInit {
     private alertController: AlertController,
     private ui: UiService,
     private data: DataService,
+    public sound: SoundService,
     private renderer: Renderer2
   ) { }
 
@@ -37,7 +39,7 @@ export class SidemenuComponent implements OnInit {
    * Select new game pack
    */
   onSelectGamePack() {
-    this.menu.close('side-menu');
+    this.onCloseMenu();
     // show spinner before content loads.
     this.ui.hideSpinner.emit(false);
     this.ui.selectGamePack.emit();
@@ -47,7 +49,7 @@ export class SidemenuComponent implements OnInit {
    * Select level for current game pack.
    */
   onSelectLevel() {
-    this.menu.close('side-menu');
+    this.onCloseMenu();
     // emit select levels event so
     // modal will load level data.
     this.ui.selectLevels.emit();
@@ -79,12 +81,10 @@ export class SidemenuComponent implements OnInit {
 
 
   /**
-   * toggle the sounds on/off
+   * show sound modal for selecting volume
    */
-  onToggleSounds() {
-    // todo
-    // this function not needed, since isSoundOn is bound to toggle button
-    // if ( this. sound is on... play ) else don't.
+  onSound() {
+    this.onCloseMenu();
   }
 
   /**

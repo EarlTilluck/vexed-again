@@ -41,7 +41,6 @@ Use angular-cli-ghpages to build and deploy to githup pages.
 ## todo
 
 * implement clear board and clear gamepack sound
-* sound volume modal (how does it work with android volume button and windows volume button)
 
 * You win shown on screen when last level reached. 
   message dissapears when choose to undo or reset.
