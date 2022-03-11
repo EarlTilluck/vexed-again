@@ -215,11 +215,15 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
     // for width: 10 blocks fit comfortably on the screen.
     // get remainder of space available
     const extraWidth = 10 % this.game.blocksPerLine;
-    const widthOffset = size * (extraWidth / 2);
+    let widthOffset = size * (extraWidth / 2);
 
     // for height, 8 blocks fit
     const extraHeight = 8 % this.game.totalLines;
-    const heightOffset = size * (extraHeight / 2);
+    let heightOffset = size * (extraHeight / 2);
+
+    // add 10 for border
+    heightOffset = heightOffset + 10;
+    widthOffset = widthOffset + 10;
 
     // set the position
     this.top = heightOffset + (this.gameBlock.line * size) + 'px';
@@ -230,7 +234,6 @@ export class GameBlockComponent implements OnInit, OnDestroy, AfterViewInit {
     this.ui.borderLeft = (widthOffset-10) + 'px';
     this.ui.borderHeight = ((this.game.totalLines * size)+20) + 'px';
     this.ui.borderWidth = ((this.game.blocksPerLine * size)+20)+ 'px';
-
   }
 
 

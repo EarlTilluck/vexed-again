@@ -71,17 +71,17 @@ export class GameService {
     // e.g. of board string:
     // XXXXXXXX/XYYYYYaX/XYXXXXXX/XYYYYYYX/XXXXXXYX/XaYYYYYX/XXXXXXXX
     // X = wall, Y = empty space, a-h = block
-    //const board = this.vexed.currentLevel.board;
+    const board = this.vexed.currentLevel.board;
 
     /*
       DEBUG:
       To force game to load a level with all blocks available use the
-      following line two lines and comment out the line above.
+      following lines and comment out the line above.
     */
-    this.history = [];
+    //this.history = [];
     //const board = 'gcXgXXXX/XgXeXXXX/XfhfYXYc/hXagfhed/dYXbegdh/bdfefdaX'; // all types of blocks
     //const board = 'YYYabYYY/aYYXXYYY/XXaXYbYb/XXXXXXXX/fYfYefec/XXXYXXXX/XXcYcXXX/XXXcXXXX'; // 8 blocks high
-    const board = 'bYXXXXaYaX/XYXbYYcYdX/XYXXYYeYeX/XbYedYcYcg/XXXXeYXYge/XXXXcYXYXX'; // 10 blocks wide
+    //const board = 'bYXXXXaYaX/XYXbYYcYdX/XYXXYYeYeX/XbYedYcYcg/XXXXeYXYge/XXXXcYXYXX'; // 10 blocks wide
 
     // split string into each line,
     const lines = board.split('/');
@@ -90,7 +90,8 @@ export class GameService {
     this.totalLines = lines.length;
 
 
-    // if history is not empty,
+    // if history is not empty, use history to populate blocks on board
+    // otherwise parse the string and use starting values
     if (this.history !== null && this.history.length > 0) {
       // then set the current state as the first block array in history
       this.blocks = this.cloneBlocks(this.history[0]);

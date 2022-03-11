@@ -43,16 +43,14 @@ export class GamePage implements OnInit, ViewDidEnter {
   }
 
   /**
-   * Set gameboard dimensions when loaded.
-   * And load the last level played.
+   * When View entered, load the last level played.
    */
   ionViewDidEnter(): void {
     // wait a while for the the view to load
     setTimeout(() => {
-      // resize the game board
-      this.ui.resizeGameBoard();
       // load default level
       this.game.loadLevel();
+      this.ui.resizeGameBoard();
     }, 500);
   }
 

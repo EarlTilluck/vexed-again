@@ -52,6 +52,7 @@ export class UiService {
    * Set the gameboard size and block size.
    */
   resizeGameBoard(): void {
+
     // get available view
     const innerWindow = document.querySelector('.tabs-inner');
 
@@ -69,40 +70,42 @@ export class UiService {
     // We do the inverse for landscape.
     const isPortrait = innerWidth <= innerHeight ? true : false;
 
-    // based on isPortrait, get total lenght of shorter dimension of screen
-    let totalLenght = isPortrait ? innerWidth : innerHeight;
-    totalLenght = totalLenght - 32 - 20; // substract the value of ion card padding
+    // set the lenght available to use
+    let lenght = isPortrait ? innerWidth : innerHeight;
+
+    // subtract the value of ion card padding
+    lenght = lenght - 32;
+
+    // subtract the value of the 10 px border
+    lenght = lenght - 20;
 
     // vexed levels can be 10 blocks wide at most
-    // board lenght should be a multiple of 10
+    // and they are 8 blocks large at most
+    // lenght used should be a multiple of 10
     // that way 10 blocks can comfortably fit onto screen.
-    // below: with totalLenght of 512, newLenght = 510, remainder = 2
-    const remainder = totalLenght % 10;
-    const newLength = totalLenght - remainder;
-
-    // set gameboard size to new lenght
-    this.boardWidth = newLength + 'px';
-
-    // vexed levels are also 10 blocks high at most
-    const newHeight = newLength * 0.8;
-    this.boardHeight = newHeight + 'px';
-
-    // calculate a block size. blocks are square.
-    // 10 blocks should fit comfortably on screen.
-    const blockSize = newLength / 10;
+    // we divide by 10, and drop the remainder to get blocksize.
+    const blockSize = Math.floor(lenght/10);
     this.blockSize = blockSize + 'px';
+
+    // set gameboard width to 10x blocksize plus border
+    const bWidth = (blockSize * 10) + 20;
+    this.boardWidth = bWidth + 'px';
+
+    // set gameboard height to 8x blocksize plus border
+    const bHeight = (blockSize * 8) + 20;
+    this.boardHeight = bHeight + 'px';
+
+    // set icon size to be a bit smaller that block size
     this.iconSize = Math.floor(blockSize * 0.65) + 'px';
 
-    // note, we can use margin: auto to center the game board horizontally
-
-    // calculate vertical offset, to center board vertically on screen
-    let heightLeftOver = innerHeight - newHeight;
+    // We can use margin: auto to center the game board horizontally,
+    // but we need to calculate the vertical offset,
+    // to center board vertically on screen
+    let heightLeftOver = innerHeight - bHeight;
     // remove height of ion card header and tab bar
     heightLeftOver = heightLeftOver - 80 - 56;
+    // set the value for margin top of gameboard
     this.heightOffset = Math.floor(heightLeftOver / 2) + 'px';
-
   }
-
-
 
 }// end class
